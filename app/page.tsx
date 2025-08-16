@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Globe, Menu, X, Zap, Code, Rocket, Monitor, Smartphone, Clock, Euro, Headphones, Send, Mail, Settings } from 'lucide-react';
 import ServiceCards from './components/ServiceCards';
@@ -8,6 +8,7 @@ import ServiceCards from './components/ServiceCards';
 export default function ReaSoftWebsite() {
   const [language, setLanguage] = useState<'sr' | 'en'>('sr');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showBackToTop, setShowBackToTop] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -18,7 +19,7 @@ export default function ReaSoftWebsite() {
 
   const content = {
     sr: {
-      nav: { home: 'Početna', services: 'Usluge', contact: 'Kontakt' },
+      nav: { home: 'Početna', services: 'Usluge', process: 'Kako radimo', contact: 'Kontakt' },
       hero: {
         headline: 'Imate dosadan posao?',
         subheadline: 'Mi ga činimo jednostavnim u nekoliko klikova!',
@@ -26,13 +27,46 @@ export default function ReaSoftWebsite() {
         cta: 'Kontaktirajte nas',
         cta2: 'Saznajte više'
       },
+      process: {
+        title: 'Kako radimo?',
+        subtitle: 'Jednostavan proces od ideje do implementacije',
+        steps: [
+          {
+            number: '01',
+            title: 'Konsultacija',
+            description: 'Analiziramo vaše potrebe i definišemo ciljeve projekta'
+          },
+          {
+            number: '02',
+            title: 'Planiranje',
+            description: 'Kreiramo detaljnu strategiju i tehnički plan izvršavanja'
+          },
+          {
+            number: '03',
+            title: 'Razvoj',
+            description: 'Razvijamo rešenje koristeći najnovije tehnologije'
+          },
+          {
+            number: '04',
+            title: 'Testiranje',
+            description: 'Temeljno testiramo funkcionalnost i performanse'
+          },
+          {
+            number: '05',
+            title: 'Isporuka',
+            description: 'Implementiramo rešenje i pružamo obuku korisnicima'
+          }
+        ]
+      },
       services: {
         title: 'Naše usluge',
-        subtitle: 'Profesionalna rešenja za sve vaše potrebe',
-        webApps: { title: 'Web aplikacije', description: 'Kreiramo moderne web aplikacije koje automatizuju vaše procese' },
-        websites: { title: 'Web sajtovi', description: 'Dizajniramo i razvijamo profesionalne web sajtove' },
-        desktop: { title: 'Desktop aplikacije', description: 'Razvijamo Windows desktop aplikacije za vaše potrebe' },
-        automation: { title: 'Automatizacija', description: 'Potpuna automatizacija dosadnih zadataka u vašoj kompaniji' }
+        subtitle: 'Kompletna digitalna rešenja za razvoj vašeg poslovanja',
+        webApps: { title: 'Web aplikacije', description: 'Kreiramo moderne web aplikacije koje automatizuju vaše procese i povećavaju efikasnost' },
+        websites: { title: 'Poslovni web sajtovi', description: 'Dizajniramo i razvijamo profesionalne web sajtove koji privlače klijente' },
+        ecommerce: { title: 'Web prodavnice', description: 'Svilhjamo e-commerce platforme koje povećavaju online prodaju' },
+        automation: { title: 'Automatizacija procesa', description: 'Kompletna automatizacija dosadnih zadataka i poslovnih procesa' },
+        desktop: { title: 'Desktop aplikacije', description: 'Razvijamo Windows desktop aplikacije za specifične potrebe' },
+        consulting: { title: 'IT konsalting', description: 'Stručno savetovanje za digitalizaciju i optimizaciju poslovanja' }
       },
       benefits: {
         title: 'Zašto ReaSoft?',
@@ -53,7 +87,7 @@ export default function ReaSoftWebsite() {
       }
     },
     en: {
-      nav: { home: 'Home', services: 'Services', contact: 'Contact' },
+      nav: { home: 'Home', services: 'Services', process: 'How We Work', contact: 'Contact' },
       hero: {
         headline: 'You have a boring job?',
         subheadline: 'We make it easy in a few clicks!',
@@ -61,13 +95,46 @@ export default function ReaSoftWebsite() {
         cta: 'Contact Us',
         cta2: 'Learn More'
       },
+      process: {
+        title: 'How We Work?',
+        subtitle: 'Simple process from idea to implementation',
+        steps: [
+          {
+            number: '01',
+            title: 'Consultation',
+            description: 'We analyze your needs and define project goals'
+          },
+          {
+            number: '02',
+            title: 'Planning',
+            description: 'We create detailed strategy and technical execution plan'
+          },
+          {
+            number: '03',
+            title: 'Development',
+            description: 'We develop solutions using the latest technologies'
+          },
+          {
+            number: '04',
+            title: 'Testing',
+            description: 'We thoroughly test functionality and performance'
+          },
+          {
+            number: '05',
+            title: 'Delivery',
+            description: 'We implement the solution and provide user training'
+          }
+        ]
+      },
       services: {
         title: 'Our Services',
-        subtitle: 'Professional solutions for all your needs',
-        webApps: { title: 'Web Applications', description: 'We create modern web applications that automate your processes' },
-        websites: { title: 'Websites', description: 'We design and develop professional websites' },
-        desktop: { title: 'Desktop Applications', description: 'We develop Windows desktop applications for your needs' },
-        automation: { title: 'Process Automation', description: 'Complete automation of boring tasks in your company' }
+        subtitle: 'Complete digital solutions for your business growth',
+        webApps: { title: 'Web Applications', description: 'We create modern web applications that automate your processes and increase efficiency' },
+        websites: { title: 'Business Websites', description: 'We design and develop professional websites that attract customers' },
+        ecommerce: { title: 'E-commerce Stores', description: 'We develop e-commerce platforms that boost online sales' },
+        automation: { title: 'Process Automation', description: 'Complete automation of boring tasks and business processes' },
+        desktop: { title: 'Desktop Applications', description: 'We develop Windows desktop applications for specific needs' },
+        consulting: { title: 'IT Consulting', description: 'Expert advice for digitalization and business optimization' }
       },
       benefits: {
         title: 'Why ReaSoft?',
@@ -90,6 +157,29 @@ export default function ReaSoftWebsite() {
   };
 
   const t = content[language];
+
+  // Back to top functionality
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowBackToTop(window.scrollY > 500);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    const scrollDuration = 1500; // 1.5 sekundi
+    const scrollStep = -window.scrollY / (scrollDuration / 15);
+    
+    const scrollInterval = setInterval(() => {
+      if (window.scrollY !== 0) {
+        window.scrollBy(0, scrollStep);
+      } else {
+        clearInterval(scrollInterval);
+      }
+    }, 15);
+  };
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -123,9 +213,11 @@ export default function ReaSoftWebsite() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <div className="w-10 h-10 bg-gradient-to-br from-brand-primary to-brand-highlight rounded-lg flex items-center justify-center animate-pulse">
-                <span className="text-white font-bold text-sm">RS</span>
-              </div>
+              <motion.div 
+                className="w-10 h-10 bg-gradient-to-br from-brand-primary to-brand-highlight rounded-lg flex items-center justify-center"
+              >
+                <Rocket className="w-6 h-6 text-white transform rotate-45" />
+              </motion.div>
               <span className="text-2xl font-bold bg-gradient-to-r from-brand-primary to-brand-highlight bg-clip-text text-transparent">
                 ReaSoft
               </span>
@@ -138,6 +230,9 @@ export default function ReaSoftWebsite() {
               </button>
               <button onClick={() => scrollToSection('services')} className="text-slate-300 hover:text-brand-primary transition-colors">
                 {t.nav.services}
+              </button>
+              <button onClick={() => scrollToSection('process')} className="text-slate-300 hover:text-brand-primary transition-colors">
+                {t.nav.process}
               </button>
               <button onClick={() => scrollToSection('contact')} className="text-slate-300 hover:text-brand-primary transition-colors">
                 {t.nav.contact}
@@ -186,6 +281,12 @@ export default function ReaSoftWebsite() {
                 {t.nav.services}
               </button>
               <button 
+                onClick={() => scrollToSection('process')} 
+                className="block w-full text-left py-2 text-slate-300 hover:text-brand-primary transition-colors"
+              >
+                {t.nav.process}
+              </button>
+              <button 
                 onClick={() => scrollToSection('contact')} 
                 className="block w-full text-left py-2 text-slate-300 hover:text-brand-primary transition-colors"
               >
@@ -218,9 +319,19 @@ export default function ReaSoftWebsite() {
               animate={{ scale: 1 }}
               transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
             >
-              <div className="w-24 h-24 bg-gradient-to-br from-brand-primary to-brand-highlight rounded-2xl flex items-center justify-center animate-bounce">
-                <span className="text-white font-bold text-2xl">RS</span>
-              </div>
+              <motion.div 
+                className="w-24 h-24 bg-gradient-to-br from-brand-primary to-brand-highlight rounded-2xl flex items-center justify-center"
+                animate={{ 
+                  rotate: [0, 360],
+                  y: [0, -10, 0]
+                }}
+                transition={{ 
+                  rotate: { duration: 15, repeat: Infinity, ease: "linear" },
+                  y: { duration: 2, repeat: Infinity, ease: "easeInOut" }
+                }}
+              >
+                <Rocket className="text-white w-12 h-12 transform rotate-45" />
+              </motion.div>
             </motion.div>
 
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6">
@@ -294,21 +405,311 @@ export default function ReaSoftWebsite() {
                 bgGradient: 'bg-gradient-to-br from-brand-secondary to-brand-secondary-dark'
               },
               { 
-                icon: Monitor, 
-                title: t.services.desktop.title, 
-                description: t.services.desktop.description,
-                color: 'accent',
-                bgGradient: 'bg-gradient-to-br from-brand-accent to-brand-accent-dark'
+                icon: Euro, 
+                title: t.services.ecommerce.title, 
+                description: t.services.ecommerce.description,
+                color: 'highlight',
+                bgGradient: 'bg-gradient-to-br from-brand-highlight to-brand-highlight-dark'
               },
               { 
                 icon: Settings, 
                 title: t.services.automation.title, 
                 description: t.services.automation.description,
-                color: 'highlight',
-                bgGradient: 'bg-gradient-to-br from-brand-highlight to-brand-highlight-dark'
+                color: 'accent',
+                bgGradient: 'bg-gradient-to-br from-brand-accent to-brand-accent-dark'
+              },
+              { 
+                icon: Monitor, 
+                title: t.services.desktop.title, 
+                description: t.services.desktop.description,
+                color: 'primary',
+                bgGradient: 'bg-gradient-to-br from-brand-primary-dark to-brand-primary'
+              },
+              { 
+                icon: Headphones, 
+                title: t.services.consulting.title, 
+                description: t.services.consulting.description,
+                color: 'secondary',
+                bgGradient: 'bg-gradient-to-br from-brand-secondary-dark to-brand-secondary'
               }
             ]}
           />
+        </div>
+      </section>
+
+      {/* Process Section */}
+      <section id="process" className="py-20 bg-gradient-to-br from-slate-900 to-slate-800 relative overflow-hidden">
+        {/* Animated Stars Background */}
+        <div className="absolute inset-0 pointer-events-none">
+          {[...Array(15)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-1 h-1 bg-white rounded-full opacity-60"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+              }}
+              animate={{
+                opacity: [0.2, 1, 0.2],
+                scale: [0.5, 1.5, 0.5]
+              }}
+              transition={{
+                duration: 2 + Math.random() * 3,
+                repeat: Infinity,
+                delay: Math.random() * 2
+              }}
+            />
+          ))}
+        </div>
+        
+        <div className="container mx-auto px-4 relative z-10">
+          <motion.div
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
+              <span className="bg-gradient-to-r from-brand-secondary to-brand-accent bg-clip-text text-transparent">
+                {t.process.title}
+              </span>
+            </h2>
+            <p className="text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto px-4">
+              {t.process.subtitle}
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 relative">
+            {/* Floating Rocket Animation - Desktop Only */}
+            <motion.div
+              className="hidden lg:block absolute top-16 z-20 pointer-events-none"
+              initial={{ left: "10%", opacity: 0 }}
+              whileInView={{ 
+                left: ["10%", "10%", "30%", "30%", "50%", "50%", "70%", "70%", "90%", "90%"],
+                opacity: 1
+              }}
+              transition={{
+                left: {
+                  duration: 25,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  times: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 1]
+                },
+                opacity: {
+                  duration: 0.8,
+                  ease: "easeOut"
+                }
+              }}
+              viewport={{ once: true }}
+            >
+              <motion.div
+                className="relative -translate-x-1/2"
+                initial={{ y: 0, rotate: 45 }}
+                whileInView={{
+                  y: [0, -15, 10, -20, 5, -10, 15, -25, 0, 0],
+                  rotate: [45, 50, 40, 55, 35, 60, 40, 50, 45, 45]
+                }}
+                transition={{
+                  duration: 25,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+                viewport={{ once: true }}
+              >
+                <motion.div
+                  className="text-brand-highlight opacity-90 hover:opacity-100 transition-opacity"
+                  initial={{ 
+                    filter: "drop-shadow(0 0 5px rgba(156, 175, 170, 0.5))",
+                    scale: 1
+                  }}
+                  whileInView={{
+                    filter: [
+                      "drop-shadow(0 0 5px rgba(156, 175, 170, 0.5))",
+                      "drop-shadow(0 0 15px rgba(156, 175, 170, 1))",
+                      "drop-shadow(0 0 5px rgba(156, 175, 170, 0.5))"
+                    ],
+                    scale: [1, 1.1, 1]
+                  }}
+                  transition={{
+                    duration: 2.5,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                  viewport={{ once: true }}
+                >
+                  <Rocket className="w-10 h-10" />
+                </motion.div>
+                
+                {/* Enhanced Sparkle Trail with Planet Colors */}
+                <motion.div
+                  className="absolute -top-2 -right-2 w-3 h-3 rounded-full"
+                  style={{
+                    background: "linear-gradient(45deg, #3b82f6, #10b981, #8b5cf6, #f97316, #ef4444)"
+                  }}
+                  initial={{ scale: 0, opacity: 0 }}
+                  whileInView={{
+                    scale: [0, 1.5, 0],
+                    opacity: [0, 1, 0],
+                    background: [
+                      "linear-gradient(45deg, #3b82f6, #10b981)",
+                      "linear-gradient(45deg, #10b981, #8b5cf6)",
+                      "linear-gradient(45deg, #8b5cf6, #f97316)",
+                      "linear-gradient(45deg, #f97316, #ef4444)",
+                      "linear-gradient(45deg, #ef4444, #3b82f6)"
+                    ]
+                  }}
+                  transition={{
+                    duration: 25,
+                    repeat: Infinity,
+                    delay: 0.1
+                  }}
+                  viewport={{ once: true }}
+                />
+                <motion.div
+                  className="absolute -bottom-2 -left-2 w-2 h-2 rounded-full"
+                  style={{
+                    background: "linear-gradient(45deg, #d6a99d, #fbf3d5)"
+                  }}
+                  initial={{ scale: 0, opacity: 0 }}
+                  whileInView={{
+                    scale: [0, 1.2, 0],
+                    opacity: [0, 1, 0],
+                    background: [
+                      "linear-gradient(45deg, #d6a99d, #fbf3d5)",
+                      "linear-gradient(45deg, #fbf3d5, #d6dac8)",
+                      "linear-gradient(45deg, #d6dac8, #9cafaa)",
+                      "linear-gradient(45deg, #9cafaa, #d6a99d)"
+                    ]
+                  }}
+                  transition={{
+                    duration: 25,
+                    repeat: Infinity,
+                    delay: 0.3
+                  }}
+                  viewport={{ once: true }}
+                />
+                <motion.div
+                  className="absolute top-1 left-3 w-1.5 h-1.5 bg-white rounded-full"
+                  initial={{ scale: 0, opacity: 0 }}
+                  whileInView={{
+                    scale: [0, 1, 0],
+                    opacity: [0, 0.8, 0]
+                  }}
+                  transition={{
+                    duration: 1.2,
+                    repeat: Infinity,
+                    delay: 0.6
+                  }}
+                  viewport={{ once: true }}
+                />
+              </motion.div>
+            </motion.div>
+
+            {t.process.steps.map((step: any, index: number) => (
+              <motion.div
+                key={index}
+                className="text-center group"
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                viewport={{ once: true }}
+              >
+                {/* Planet Step Circle */}
+                <motion.div 
+                  className={`w-32 h-32 mx-auto mb-6 rounded-full flex items-center justify-center backdrop-blur-sm border-2 transition-all duration-300 group-hover:scale-105 relative overflow-hidden ${
+                    index === 0 ? 'bg-gradient-to-br from-brand-primary to-brand-primary-dark border-brand-primary' :
+                    index === 1 ? 'bg-gradient-to-br from-brand-secondary to-brand-secondary-dark border-brand-secondary' :
+                    index === 2 ? 'bg-gradient-to-br from-brand-highlight to-brand-highlight-dark border-brand-highlight' :
+                    index === 3 ? 'bg-gradient-to-br from-brand-accent to-brand-accent-dark border-brand-accent' :
+                    'bg-gradient-to-br from-brand-primary-dark to-brand-primary border-brand-primary'
+                  }`}
+                  animate={{
+                    boxShadow: [
+                      "0 0 0 0 rgba(214, 169, 157, 0)",
+                      "0 0 0 15px rgba(214, 169, 157, 0.1)",
+                      "0 0 0 0 rgba(214, 169, 157, 0)"
+                    ],
+                    rotate: [0, 360],
+                    scale: [1, 1.02, 1]
+                  }}
+                  transition={{
+                    boxShadow: {
+                      duration: 4,
+                      repeat: Infinity,
+                      delay: index * 4,
+                      ease: "easeInOut"
+                    },
+                    rotate: {
+                      duration: 120 + index * 20,
+                      repeat: Infinity,
+                      ease: "linear"
+                    },
+                    scale: {
+                      duration: 5,
+                      repeat: Infinity,
+                      delay: index * 2.5,
+                      ease: "easeInOut"
+                    }
+                  }}
+                >
+                  {/* Planet Surface Pattern */}
+                  <div className="absolute inset-0 rounded-full opacity-30">
+                    {index === 0 && (
+                      <div className="w-full h-full bg-gradient-to-r from-transparent via-white to-transparent opacity-20"></div>
+                    )}
+                    {index === 1 && (
+                      <>
+                        <div className="absolute top-2 left-4 w-6 h-6 bg-brand-secondary-light rounded-full opacity-40"></div>
+                        <div className="absolute bottom-3 right-5 w-4 h-4 bg-brand-secondary-light rounded-full opacity-40"></div>
+                      </>
+                    )}
+                    {index === 2 && (
+                      <div className="absolute inset-0 bg-gradient-to-br from-brand-highlight-light to-transparent opacity-30 rounded-full"></div>
+                    )}
+                    {index === 3 && (
+                      <>
+                        <div className="absolute top-1 left-2 w-8 h-2 bg-brand-accent-light rounded-full opacity-50"></div>
+                        <div className="absolute bottom-4 right-3 w-6 h-2 bg-brand-accent-light rounded-full opacity-50"></div>
+                      </>
+                    )}
+                    {index === 4 && (
+                      <div className="absolute inset-2 border border-brand-primary-light rounded-full opacity-40"></div>
+                    )}
+                  </div>
+                  
+                  {/* Planet Number */}
+                  <motion.span 
+                    className="text-3xl font-bold text-white z-10 relative drop-shadow-lg"
+                    animate={{
+                      scale: [1, 1.1, 1],
+                      textShadow: [
+                        "0 0 0 rgba(255, 255, 255, 0)",
+                        "0 0 20px rgba(255, 255, 255, 0.8)",
+                        "0 0 0 rgba(255, 255, 255, 0)"
+                      ]
+                    }}
+                    transition={{
+                      duration: 4,
+                      repeat: Infinity,
+                      delay: index * 4,
+                      ease: "easeInOut"
+                    }}
+                  >
+                    {step.number}
+                  </motion.span>
+                </motion.div>
+                
+                {/* Step Content */}
+                <h3 className="text-xl font-bold text-white mb-3 group-hover:text-brand-primary transition-colors">
+                  {step.title}
+                </h3>
+                <p className="text-slate-300 text-sm leading-relaxed">
+                  {step.description}
+                </p>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -418,9 +819,13 @@ export default function ReaSoftWebsite() {
       <footer className="bg-slate-900 border-t border-slate-700 py-8">
         <div className="container mx-auto px-4 text-center">
           <div className="flex items-center justify-center space-x-2 mb-4">
-            <div className="w-8 h-8 bg-gradient-to-br from-brand-primary to-brand-highlight rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xs">RS</span>
-            </div>
+            <motion.div 
+              className="w-8 h-8 bg-gradient-to-br from-brand-primary to-brand-highlight rounded-lg flex items-center justify-center"
+              animate={{ rotate: [0, 360] }}
+              transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+            >
+              <Rocket className="text-white w-4 h-4 transform rotate-45" />
+            </motion.div>
             <span className="text-xl font-bold bg-gradient-to-r from-brand-primary to-brand-highlight bg-clip-text text-transparent">
               ReaSoft
             </span>
@@ -430,6 +835,97 @@ export default function ReaSoftWebsite() {
           </p>
         </div>
       </footer>
+
+      {/* Back to Top Button */}
+      {showBackToTop && (
+        <motion.button
+          onClick={scrollToTop}
+          className="fixed bottom-8 right-8 z-50 w-14 h-14 bg-gradient-to-br from-brand-primary to-brand-highlight rounded-full flex items-center justify-center shadow-lg hover:shadow-2xl transition-all duration-300 group"
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0, opacity: 0 }}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ 
+            scale: 0.9,
+            y: -50,
+            transition: { 
+              type: "spring", 
+              stiffness: 400, 
+              damping: 10,
+              duration: 2 
+            }
+          }}
+        >
+          <motion.div
+            animate={{ 
+              y: [0, -3, 0],
+              rotate: [0, 5, 0]
+            }}
+            transition={{ 
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          >
+            <Rocket className="w-6 h-6 text-white transform -rotate-45 group-hover:scale-110 transition-transform" />
+          </motion.div>
+          
+          {/* Enhanced Rocket Trail */}
+          <motion.div
+            className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-3 bg-gradient-to-t from-orange-500 to-yellow-400 rounded-full"
+            animate={{
+              scale: [0.5, 1.2, 0.5],
+              opacity: [0.3, 1, 0.3],
+              height: [8, 16, 8]
+            }}
+            transition={{
+              duration: 0.8,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          />
+          <motion.div
+            className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-2 bg-gradient-to-t from-red-500 to-orange-400 rounded-full"
+            animate={{
+              scale: [0.3, 1, 0.3],
+              opacity: [0.5, 1, 0.5],
+              height: [6, 12, 6]
+            }}
+            transition={{
+              duration: 1,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 0.2
+            }}
+          />
+          
+          {/* Sparkle Effects */}
+          <motion.div
+            className="absolute -top-1 -right-1 w-2 h-2 bg-brand-accent rounded-full"
+            animate={{
+              scale: [0, 1, 0],
+              opacity: [0, 1, 0]
+            }}
+            transition={{
+              duration: 1,
+              repeat: Infinity,
+              delay: 0.2
+            }}
+          />
+          <motion.div
+            className="absolute -top-2 -left-1 w-1.5 h-1.5 bg-brand-secondary rounded-full"
+            animate={{
+              scale: [0, 1, 0],
+              opacity: [0, 1, 0]
+            }}
+            transition={{
+              duration: 1.2,
+              repeat: Infinity,
+              delay: 0.5
+            }}
+          />
+        </motion.button>
+      )}
     </div>
   );
 }
