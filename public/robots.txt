@@ -1,0 +1,16 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://reasoft.rs/sitemap.xml
+
+# Disallow crawling of admin areas (if any in future)
+Disallow: /api/
+Disallow: /_next/
+Disallow: /admin/
+
+# Allow crawling of main content
+Allow: /sr/
+Allow: /en/
+Allow: /images/
+Allow: /icons/
