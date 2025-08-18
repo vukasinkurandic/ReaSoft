@@ -15,11 +15,14 @@ interface ProcessProps {
       }>;
     };
   };
+  language: 'sr' | 'en';
 }
 
-export default function Process({ t }: ProcessProps) {
+export default function Process({ t, language }: ProcessProps) {
+  const sectionId = language === 'sr' ? 'razvoj' : 'process';
+  
   return (
-    <section id="process" className="py-20 bg-gradient-to-br from-slate-900 to-slate-800 relative overflow-hidden">
+    <section id={sectionId} className="py-20 bg-gradient-to-br from-slate-900 to-slate-800 relative overflow-hidden">
       {/* Animated Stars Background */}
       <div className="absolute inset-0 pointer-events-none">
         {[16.04, 58.03, 19.97, 21.23, 11.26, 20.73, 75.02, 28.47, 49.63, 59.99, 21.12, 66.59, 44.72, 58.27, 94.73].map((leftPos, i) => {

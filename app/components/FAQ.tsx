@@ -15,13 +15,15 @@ interface FAQProps {
       }>;
     };
   };
+  language: 'sr' | 'en';
 }
 
-export default function FAQ({ t }: FAQProps) {
+export default function FAQ({ t, language }: FAQProps) {
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
+  const sectionId = language === 'sr' ? 'pitanja' : 'faq';
 
   return (
-    <section id="faq" className="py-20 bg-slate-800 relative overflow-hidden">
+    <section id={sectionId} className="py-20 bg-slate-800 relative overflow-hidden">
       {/* Rocket Launch Ramp Background */}
       <div className="absolute inset-0 pointer-events-none">
         <svg className="absolute bottom-0 left-0 w-full h-full opacity-5" viewBox="0 0 1200 800" fill="none">
@@ -83,14 +85,24 @@ export default function FAQ({ t }: FAQProps) {
             {/* FAQ Steps */}
             <div className="space-y-8">
               {t.faq.questions.map((faq: any, index: number) => {
-                const marginClasses = [
-                  'ml-0', 'ml-12', 'ml-24', 'ml-36', 'ml-48', 'ml-60', 'ml-72', 'ml-96'
-                ];
+                // Responsivni margin sistem
+                const getResponsiveMarginClass = (index: number) => {
+                  // Za velike ekrane (xl: 1280px+) - veliki stepenasti layout
+                  const xlMargins = ['xl:ml-0', 'xl:ml-16', 'xl:ml-32', 'xl:ml-48', 'xl:ml-64', 'xl:ml-80', 'xl:ml-96', 'xl:ml-[28rem]', 'xl:ml-[32rem]'];
+                  
+                  // Za srednje ekrane (lg: 1024px-1279px) - manji stepenasti layout  
+                  const lgMargins = ['lg:ml-0', 'lg:ml-8', 'lg:ml-16', 'lg:ml-24', 'lg:ml-32', 'lg:ml-40', 'lg:ml-48', 'lg:ml-56', 'lg:ml-64'];
+                  
+                  // Za manje ekrane (sve do lg) - obični layout
+                  const baseMargin = 'ml-0';
+                  
+                  return `${baseMargin} ${lgMargins[index] || 'lg:ml-64'} ${xlMargins[index] || 'xl:ml-[32rem]'}`;
+                };
                 
                 return (
                   <motion.div
                     key={index}
-                    className={`${marginClasses[index] || 'ml-96'} max-w-2xl`}
+                    className={`${getResponsiveMarginClass(index)} max-w-2xl`}
                     initial={{ opacity: 0, x: -50 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.6, delay: index * 0.1 }}

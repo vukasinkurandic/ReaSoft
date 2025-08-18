@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Globe, Monitor, Smartphone, Euro, Settings, Headphones, Rocket } from 'lucide-react';
+import { Globe, Monitor, Smartphone, Palette, Settings, Headphones, Rocket } from 'lucide-react';
 import ServiceCards from './components/ServiceCards';
 import Header from './components/Header';
 import Hero from './components/Hero';
@@ -18,13 +18,70 @@ export default function ReaSoftWebsite() {
   const [activeServiceCard, setActiveServiceCard] = useState(0);
   const [isUserInteracting, setIsUserInteracting] = useState(false);
 
+  // Section ID mapping for localized URLs
+  const sectionIds = {
+    sr: {
+      services: 'usluge',
+      about: 'o-nama', 
+      projects: 'projekti',
+      process: 'razvoj',
+      faq: 'pitanja',
+      contact: 'kontakt'
+    },
+    en: {
+      services: 'services',
+      about: 'about',
+      projects: 'projects', 
+      process: 'process',
+      faq: 'faq',
+      contact: 'contact'
+    }
+  };
+
+  // Handle direct hash navigation
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.substring(1);
+      if (hash) {
+        // First try direct element lookup
+        let element = document.getElementById(hash);
+        
+        // If not found, try mapping from other language
+        if (!element) {
+          const otherLang = language === 'sr' ? 'en' : 'sr';
+          const currentLangSections = sectionIds[language];
+          const otherLangSections = sectionIds[otherLang];
+          
+          // Find corresponding section in current language
+          for (const [key, value] of Object.entries(otherLangSections)) {
+            if (value === hash) {
+              element = document.getElementById(currentLangSections[key as keyof typeof currentLangSections]);
+              break;
+            }
+          }
+        }
+        
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    };
+
+    // Check for hash on initial load
+    handleHashChange();
+    
+    // Listen for hash changes
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, [language, sectionIds]);
+
   const content = {
     sr: {
-      nav: { home: 'Početna', services: 'Usluge', process: 'Kako radimo', faq: 'Pitanja', contact: 'Kontakt' },
+      nav: { home: 'Početna', services: 'Usluge', about: 'O nama', projects: 'Projekti', process: 'Kako radimo', faq: 'Pitanja', contact: 'Kontakt' },
       hero: {
-        headline: 'Imate dosadan posao?',
+        headline: 'Razvoj softvera po meri i izrada sajtova za firme u Srbiji',
         subheadline: 'Mi ga činimo jednostavnim u nekoliko klikova!',
-        description: 'Zašto gubiti vreme na dosadne zadatke kada možete raditi nešto korisno za sebe?',
+        description: 'Profesionalna izrada sajtova Beograd, Niš, Novi Sad, Kragujevac, Kruševac, Kraljevo. Sajt za firmu, sajt za biznis, automatizacija poslovanja - softver za poboljšanje poslovanja malih firmi u Srbiji.',
         cta: 'Kontaktirajte nas',
         cta2: 'Saznajte više'
       },
@@ -62,12 +119,12 @@ export default function ReaSoftWebsite() {
       services: {
         title: 'Naše usluge',
         subtitle: 'Kompletna digitalna rešenja za razvoj vašeg poslovanja',
-        webApps: { title: 'Web aplikacije', description: 'Kreiramo moderne web aplikacije koje automatizuju vaše procese i povećavaju efikasnost' },
-        websites: { title: 'Poslovni web sajtovi', description: 'Dizajniramo i razvijamo profesionalne web sajtove koji privlače klijente' },
-        ecommerce: { title: 'Web prodavnice', description: 'Svilhjamo e-commerce platforme koje povećavaju online prodaju' },
-        automation: { title: 'Automatizacija procesa', description: 'Kompletna automatizacija dosadnih zadataka i poslovnih procesa' },
-        desktop: { title: 'Desktop aplikacije', description: 'Razvijamo Windows desktop aplikacije za specifične potrebe' },
-        consulting: { title: 'IT konsalting', description: 'Stručno savetovanje za digitalizaciju i optimizaciju poslovanja' }
+        webApps: { title: 'Web aplikacije po meri', description: 'Kreiramo moderne web aplikacije koje automatizuju vaše procese i povećavaju efikasnost. Razvoj softvera po meri za poboljšanje poslovanja.' },
+        websites: { title: 'Izrada sajtova za firme', description: 'Profesionalna izrada sajtova Beograd, Niš, Novi Sad, Kragujevac, Kruševac, Kraljevo. Sajt za firmu, sajt za biznis koji privlači klijente i poboljšava poslovanje.' },
+        ecommerce: { title: 'Web prodavnice (E-commerce)', description: 'Razvijamo e-commerce platforme i web prodavnice koje povećavaju online prodaju i automatizuju proces naručivanja.' },
+        automation: { title: 'Automatizacija poslovanja', description: 'Kompletna automatizacija dosadnih zadataka i poslovnih procesa. Softver za automatizaciju poslovanja malih firmi u Srbiji.' },
+        mobileApps: { title: 'Desktop aplikacije', description: 'Razvoj desktop aplikacija za Windows, Mac i Linux. Softver po meri koji omogućava bolje upravljanje poslovanjem direktno sa vašeg računara.' },
+        consulting: { title: 'IT outsourcing i konsalting', description: 'Stručno savetovanje za digitalizaciju i optimizaciju poslovanja. IT outsourcing usluge za firme u Srbiji.' }
       },
       benefits: {
         title: 'Zašto ReaSoft?',
@@ -109,6 +166,10 @@ export default function ReaSoftWebsite() {
           {
             question: 'Zašto nije moguće da bude "brzo i jeftino"?',
             answer: 'Razumemo da svako voli da prođe što povoljnije i da posao bude gotov odmah. Međutim, kvalitetan softver zahteva planiranje, razvoj i testiranje. Ako želite rešenje koje će zaista raditi, donositi klijente i trajati godinama, ulaže se i vreme i znanje. Na kraju, to se uvek isplati više nego "najbrže i najjeftinije" rešenje.'
+          },
+          {
+            question: 'Radite li sa firmama iz cele Srbije (Beograd, Niš, Novi Sad)?',
+            answer: 'Da, radimo sa klijentima iz cele Srbije - Beograd, Novi Sad, Niš, Kragujevac, Kruševac, Kraljevo i ostali gradovi. Većinu komunikacije obavljamo online, a po potrebi organizujemo lične sastanke. Lokacija nije ograničenje za kvalitetnu saradnju.'
           }
         ]
       },
@@ -123,14 +184,50 @@ export default function ReaSoftWebsite() {
           success: 'Poruka je uspešno poslana!',
           error: 'Greška pri slanju. Pokušajte ponovo.'
         }
+      },
+      about: {
+        title: 'O nama',
+        description1: 'ReaSoft je kompanija specializovana za razvoj softvera po meri i izrada sajtova za firme u Srbiji. Koristimo moderne tehnologije kao što su Python, Django, React i Next.js kako bismo kreirali rešenja koja stvarno poboljšavaju poslovanje naših klijenata.',
+        description2: 'Specijalizovani smo za automatizaciju poslovanja kroz prilagođene web aplikacije koje štede vreme i povećavaju efikasnost. Bez obzira da li vam je potreban jednostavan sajt za firmu ili kompleksna aplikacija, mi imamo iskustvo i znanje da realizujemo vaš projekat.',
+        technologies: {
+          title: 'Tehnologije',
+          description: 'Python, Django, React, Next.js, Node.js, PostgreSQL'
+        },
+        focus: {
+          title: 'Fokus',
+          description: 'Automatizacija poslovanja i poboljšanje efikasnosti'
+        },
+        location: {
+          title: 'Lokacija',
+          description: 'Cela Srbija - Beograd, Novi Sad, Niš, Kragujevac, Kruševac, Kraljevo'
+        }
+      },
+      projects: {
+        title: 'Naši projekti',
+        subtitle: 'Primeri uspešno realizovanih projekata razvoja softvera po meri i izrade sajtova za firme u Srbiji',
+        ecommerce: {
+          title: 'E-commerce platforma',
+          description: 'Kompletna web prodavnica sa automatizacijom naručivanja i upravljanjem inventara',
+          tech: 'Web aplikacija • React • Python'
+        },
+        crm: {
+          title: 'Desktop aplikacija za upravljanje podacima',
+          description: 'Kompleksna desktop aplikacija za upravljanje podacima, generisanje izveštaja i praćenje korišćenja usluga. Uključuje napredne notifikacije i obaveštenja.',
+          tech: 'Desktop aplikacija • Python • NoSQL baza • Offline sistem'
+        },
+        business: {
+          title: 'Poslovni sajt sa rezervacijama',
+          description: 'Moderni sajt za firmu sa integrisanim sistemom online rezervacija',
+          tech: 'Sajt za firmu • Next.js • FastAPI'
+        }
       }
     },
     en: {
-      nav: { home: 'Home', services: 'Services', process: 'How We Work', faq: 'FAQ', contact: 'Contact' },
+      nav: { home: 'Home', services: 'Services', about: 'About Us', projects: 'Projects', process: 'How We Work', faq: 'FAQ', contact: 'Contact' },
       hero: {
-        headline: 'You have a boring job?',
-        subheadline: 'We make it easy in a few clicks!',
-        description: 'Why waste time on annoying tasks when you can do something awesome and useful for yourself?',
+        headline: 'Custom Software Development and Website Creation for Companies in Serbia',
+        subheadline: 'We make it simple in just a few clicks!',
+        description: 'Professional website development Belgrade, Niš, Novi Sad, Kragujevac, Kruševac, Kraljevo. Business website, corporate website, business automation - software solutions to improve operations for small businesses in Serbia.',
         cta: 'Contact Us',
         cta2: 'Learn More'
       },
@@ -167,18 +264,18 @@ export default function ReaSoftWebsite() {
       },
       services: {
         title: 'Our Services',
-        subtitle: 'Complete digital solutions for your business growth',
-        webApps: { title: 'Web Applications', description: 'We create modern web applications that automate your processes and increase efficiency' },
-        websites: { title: 'Business Websites', description: 'We design and develop professional websites that attract customers' },
-        ecommerce: { title: 'E-commerce Stores', description: 'We develop e-commerce platforms that boost online sales' },
-        automation: { title: 'Process Automation', description: 'Complete automation of boring tasks and business processes' },
-        desktop: { title: 'Desktop Applications', description: 'We develop Windows desktop applications for specific needs' },
-        consulting: { title: 'IT Consulting', description: 'Expert advice for digitalization and business optimization' }
+        subtitle: 'Complete digital solutions for your business development',
+        webApps: { title: 'Custom Web Applications', description: 'We create modern web applications that automate your processes and increase efficiency. Custom software development to improve business operations.' },
+        websites: { title: 'Business Website Development', description: 'Professional website development Belgrade, Niš, Novi Sad, Kragujevac, Kruševac, Kraljevo. Business website, corporate website that attracts clients and improves operations.' },
+        ecommerce: { title: 'E-commerce Stores (E-commerce)', description: 'We develop e-commerce platforms and online stores that increase online sales and automate the ordering process.' },
+        automation: { title: 'Business Process Automation', description: 'Complete automation of tedious tasks and business processes. Business automation software for small companies in Serbia.' },
+        mobileApps: { title: 'Desktop Applications', description: 'Desktop application development for Windows, Mac and Linux. Custom software that enables better business management directly from your computer.' },
+        consulting: { title: 'IT Outsourcing and Consulting', description: 'Expert advice for digitalization and business optimization. IT outsourcing services for companies in Serbia.' }
       },
       benefits: {
         title: 'Why ReaSoft?',
         subtitle: 'Your partner for digital innovations',
-        items: ['We automate boring tasks', 'We save your time and money', 'Simple solutions in a few clicks', '24/7 Support']
+        items: ['We automate tedious tasks', 'We save your time and money', 'Simple solutions in just a few clicks', '24/7 Support']
       },
       faq: {
         title: 'Frequently Asked Questions',
@@ -215,6 +312,10 @@ export default function ReaSoftWebsite() {
           {
             question: 'Why can\'t it be "fast and cheap"?',
             answer: 'We understand that everyone likes to get the best deal and have the job done immediately. However, quality software requires planning, development and testing. If you want a solution that will actually work, bring clients and last for years, both time and knowledge are invested. In the end, it always pays off more than the "fastest and cheapest" solution.'
+          },
+          {
+            question: 'Do you work with companies throughout Serbia (Belgrade, Niš, Novi Sad)?',
+            answer: 'Yes, we work with clients from all over Serbia - Belgrade, Novi Sad, Niš, Kragujevac, Kruševac, Kraljevo and other cities. We handle most communication online, and organize face-to-face meetings when needed. Location is not a limitation for quality collaboration.'
           }
         ]
       },
@@ -228,6 +329,42 @@ export default function ReaSoftWebsite() {
           submit: 'Send Request',
           success: 'Message sent successfully!',
           error: 'Error sending message. Please try again.'
+        }
+      },
+      about: {
+        title: 'About Us',
+        description1: 'ReaSoft is a company specialized in <strong>custom software development</strong> and <strong>website creation for companies</strong> in Serbia. We use modern technologies such as <strong>Python, Django, React and Next.js</strong> to create solutions that truly improve our clients\' business operations.',
+        description2: 'We specialize in <strong>business automation</strong> through custom web applications that save time and increase efficiency. Whether you need a simple <strong>business website</strong> or a complex application, we have the experience and knowledge to realize your project.',
+        technologies: {
+          title: 'Technologies',
+          description: 'Python, Django, React, Next.js, Node.js, PostgreSQL'
+        },
+        focus: {
+          title: 'Focus',
+          description: 'Business automation and efficiency improvement'
+        },
+        location: {
+          title: 'Location',
+          description: 'All of Serbia - Belgrade, Novi Sad, Niš, Kragujevac, Kruševac, Kraljevo'
+        }
+      },
+      projects: {
+        title: 'Our Projects',
+        subtitle: 'Examples of successfully completed custom software development and website creation projects for companies in Serbia',
+        ecommerce: {
+          title: 'E-commerce Platform',
+          description: 'Complete online store with order automation and inventory management',
+          tech: 'Web Application • React • Python'
+        },
+        crm: {
+          title: 'Desktop Data Management Application',
+          description: 'Complex desktop application for data management, report generation and service usage tracking. Includes advanced notifications and alerts system.',
+          tech: 'Desktop Application • Python • NoSQL Database • Offline System'
+        },
+        business: {
+          title: 'Business Website with Reservations',
+          description: 'Modern business website with integrated online reservation system',
+          tech: 'Business Website • Next.js • FastAPI'
         }
       }
     }
@@ -247,6 +384,9 @@ export default function ReaSoftWebsite() {
   }, [isUserInteracting]);
 
   const scrollToSection = (sectionId: string) => {
+    // Update URL hash for SEO
+    window.history.pushState(null, '', `/#${sectionId}`);
+    
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
@@ -259,13 +399,12 @@ export default function ReaSoftWebsite() {
         language={language} 
         setLanguage={setLanguage} 
         t={t} 
-        scrollToSection={scrollToSection} 
       />
       
       <Hero t={t} scrollToSection={scrollToSection} />
 
       {/* Services Section with Stacked Cards */}
-      <section id="services" className="py-20 bg-slate-800 overflow-hidden">
+      <section id={sectionIds[language].services} className="py-20 bg-slate-800 overflow-hidden">
         <div className="container mx-auto px-4">
           <div className="text-center mb-8 sm:mb-16">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
@@ -283,12 +422,12 @@ export default function ReaSoftWebsite() {
             <div className="grid grid-cols-12 gap-8 items-center min-h-[600px]">
               {/* Left Side - Text Content */}
               <div className="col-span-5">
-                <div className="space-y-6 min-h-[400px] flex flex-col justify-center">
+                <div className="space-y-6 h-[500px] flex flex-col justify-start items-start">
                   <div className="flex items-center space-x-3 mb-4">
                     <div key={`icon-${activeServiceCard}`}>
                       {activeServiceCard === 0 && <Globe className="w-8 h-8 text-brand-primary" />}
                       {activeServiceCard === 1 && <Smartphone className="w-8 h-8 text-brand-secondary" />}
-                      {activeServiceCard === 2 && <Euro className="w-8 h-8 text-brand-highlight" />}
+                      {activeServiceCard === 2 && <Palette className="w-8 h-8 text-brand-highlight" />}
                       {activeServiceCard === 3 && <Settings className="w-8 h-8 text-brand-accent" />}
                       {activeServiceCard === 4 && <Monitor className="w-8 h-8 text-brand-primary" />}
                       {activeServiceCard === 5 && <Headphones className="w-8 h-8 text-brand-secondary" />}
@@ -296,26 +435,28 @@ export default function ReaSoftWebsite() {
                     <span className="text-sm font-medium text-slate-400">0{activeServiceCard + 1}/06</span>
                   </div>
                   
-                  <h3 className="text-4xl font-bold text-white mb-4 min-h-[120px] flex items-center">
-                    {activeServiceCard === 0 && t.services.webApps.title}
-                    {activeServiceCard === 1 && t.services.websites.title}
-                    {activeServiceCard === 2 && t.services.ecommerce.title}
-                    {activeServiceCard === 3 && t.services.automation.title}
-                    {activeServiceCard === 4 && t.services.desktop.title}
-                    {activeServiceCard === 5 && t.services.consulting.title}
+                  <h3 className="text-4xl font-bold text-white mb-4 h-[120px] flex items-start leading-tight">
+                    <span className="block">
+                      {activeServiceCard === 0 && t.services.webApps.title}
+                      {activeServiceCard === 1 && t.services.websites.title}
+                      {activeServiceCard === 2 && t.services.ecommerce.title}
+                      {activeServiceCard === 3 && t.services.automation.title}
+                      {activeServiceCard === 4 && t.services.mobileApps.title}
+                      {activeServiceCard === 5 && t.services.consulting.title}
+                    </span>
                   </h3>
                   
-                  <p className="text-xl text-slate-300 leading-relaxed min-h-[80px]">
+                  <p className="text-xl text-slate-300 leading-relaxed h-[120px] overflow-hidden">
                     {activeServiceCard === 0 && t.services.webApps.description}
                     {activeServiceCard === 1 && t.services.websites.description}
                     {activeServiceCard === 2 && t.services.ecommerce.description}
                     {activeServiceCard === 3 && t.services.automation.description}
-                    {activeServiceCard === 4 && t.services.desktop.description}
+                    {activeServiceCard === 4 && t.services.mobileApps.description}
                     {activeServiceCard === 5 && t.services.consulting.description}
                   </p>
 
                   {/* Navigation Dots */}
-                  <div className="flex space-x-3 pt-6">
+                  <div className="flex space-x-3 pt-6 mt-auto">
                     {[0, 1, 2, 3, 4, 5].map((index) => (
                       <button
                         key={index}
@@ -346,7 +487,10 @@ export default function ReaSoftWebsite() {
                 >
                   {[0, 1, 2, 3, 4, 5].map((index) => {
                     const isActive = index === activeServiceCard;
-                    const offset = index - activeServiceCard;
+                    // Circular offset calculation for 6 cards
+                    let offset = index - activeServiceCard;
+                    if (offset > 3) offset -= 6;  // Handle wrap-around for positive offsets
+                    if (offset < -3) offset += 6; // Handle wrap-around for negative offsets
                     const bgColors = [
                       'from-brand-primary to-brand-primary-dark',
                       'from-brand-secondary to-brand-secondary-dark', 
@@ -371,16 +515,14 @@ export default function ReaSoftWebsite() {
                         };
                       }
 
-                      // Kartice iza aktivne (pozitivni offset)
+                      // Kartice iza aktivne (pozitivni offset - desno)
                       if (offset > 0) {
                         const positions = [
                           { x: 60, y: 35, rotateZ: 8, rotateY: 15, rotateX: 5 },    // kartica 1 pozicija iza
-                          { x: 45, y: 65, rotateZ: -18, rotateY: 25, rotateX: 8 },  // kartica 2 pozicije iza - rotirana levo
-                          { x: 85, y: 50, rotateZ: 15, rotateY: 35, rotateX: 10 },  // kartica 3 pozicije iza
-                          { x: 75, y: 80, rotateZ: -12, rotateY: 40, rotateX: 12 }, // kartica 4 pozicije iza
-                          { x: 95, y: 60, rotateZ: 20, rotateY: 45, rotateX: 15 }   // kartica 5 pozicija iza
+                          { x: 85, y: 65, rotateZ: -12, rotateY: 25, rotateX: 8 },  // kartica 2 pozicije iza
+                          { x: 95, y: 80, rotateZ: 18, rotateY: 35, rotateX: 12 }   // kartica 3 pozicije iza
                         ];
-                        const pos = positions[offset - 1] || positions[4];
+                        const pos = positions[Math.min(offset - 1, 2)];
                         
                         return {
                           x: pos.x,
@@ -388,22 +530,21 @@ export default function ReaSoftWebsite() {
                           rotateZ: pos.rotateZ,
                           rotateY: pos.rotateY,
                           rotateX: pos.rotateX,
-                          scale: 0.85 - (offset * 0.05),
-                          opacity: 0.6,
+                          scale: Math.max(0.7, 0.9 - (offset * 0.08)),
+                          opacity: Math.max(0.4, 0.8 - (offset * 0.15)),
                           zIndex: 10 - offset
                         };
                       }
 
-                      // Kartice ispred aktivne (negativni offset)
+                      // Kartice ispred aktivne (negativni offset - levo)
                       if (offset < 0) {
                         const positions = [
                           { x: -60, y: 35, rotateZ: -8, rotateY: -15, rotateX: 5 },   // kartica 1 pozicija ispred
-                          { x: -45, y: 65, rotateZ: 18, rotateY: -25, rotateX: 8 },   // kartica 2 pozicije ispred - rotirana desno
-                          { x: -85, y: 50, rotateZ: -15, rotateY: -35, rotateX: 10 }, // kartica 3 pozicije ispred
-                          { x: -75, y: 80, rotateZ: 12, rotateY: -40, rotateX: 12 },  // kartica 4 pozicije ispred
-                          { x: -95, y: 60, rotateZ: -20, rotateY: -45, rotateX: 15 }  // kartica 5 pozicija ispred
+                          { x: -85, y: 65, rotateZ: 12, rotateY: -25, rotateX: 8 },   // kartica 2 pozicije ispred
+                          { x: -95, y: 80, rotateZ: -18, rotateY: -35, rotateX: 12 }  // kartica 3 pozicije ispred
                         ];
-                        const pos = positions[Math.abs(offset) - 1] || positions[4];
+                        const absOffset = Math.abs(offset);
+                        const pos = positions[Math.min(absOffset - 1, 2)];
                         
                         return {
                           x: pos.x,
@@ -411,9 +552,9 @@ export default function ReaSoftWebsite() {
                           rotateZ: pos.rotateZ,
                           rotateY: pos.rotateY,
                           rotateX: pos.rotateX,
-                          scale: 0.85 - (Math.abs(offset) * 0.05),
-                          opacity: 0.6,
-                          zIndex: 10 - Math.abs(offset)
+                          scale: Math.max(0.7, 0.9 - (absOffset * 0.08)),
+                          opacity: Math.max(0.4, 0.8 - (absOffset * 0.15)),
+                          zIndex: 10 - absOffset
                         };
                       }
 
@@ -453,7 +594,7 @@ export default function ReaSoftWebsite() {
                         onDragStart={() => {
                           setIsUserInteracting(true);
                         }}
-                        onDragEnd={(event, info) => {
+                        onDragEnd={(_, info) => {
                           if (info.offset.x > 40) {
                             setActiveServiceCard((prev) => (prev - 1 + 6) % 6);
                           } else if (info.offset.x < -40) {
@@ -485,7 +626,7 @@ export default function ReaSoftWebsite() {
                           }`}>
                             {index === 0 && <Globe className="w-14 h-14 text-white drop-shadow-lg" />}
                             {index === 1 && <Smartphone className="w-14 h-14 text-slate-700 drop-shadow-lg" />}
-                            {index === 2 && <Euro className="w-14 h-14 text-white drop-shadow-lg" />}
+                            {index === 2 && <Palette className="w-14 h-14 text-white drop-shadow-lg" />}
                             {index === 3 && <Settings className="w-14 h-14 text-slate-700 drop-shadow-lg" />}
                             {index === 4 && <Monitor className="w-14 h-14 text-white drop-shadow-lg" />}
                             {index === 5 && <Headphones className="w-14 h-14 text-slate-700 drop-shadow-lg" />}
@@ -499,7 +640,7 @@ export default function ReaSoftWebsite() {
                             {index === 1 && t.services.websites.title}
                             {index === 2 && t.services.ecommerce.title}
                             {index === 3 && t.services.automation.title}
-                            {index === 4 && t.services.desktop.title}
+                            {index === 4 && t.services.mobileApps.title}
                             {index === 5 && t.services.consulting.title}
                           </h4>
 
@@ -558,7 +699,7 @@ export default function ReaSoftWebsite() {
                   bgGradient: 'bg-gradient-to-br from-brand-secondary to-brand-secondary-dark'
                 },
                 { 
-                  icon: Euro, 
+                  icon: Palette, 
                   title: t.services.ecommerce.title, 
                   description: t.services.ecommerce.description,
                   color: 'highlight',
@@ -573,8 +714,8 @@ export default function ReaSoftWebsite() {
                 },
                 { 
                   icon: Monitor, 
-                  title: t.services.desktop.title, 
-                  description: t.services.desktop.description,
+                  title: t.services.mobileApps.title, 
+                  description: t.services.mobileApps.description,
                   color: 'primary',
                   bgGradient: 'bg-gradient-to-br from-brand-primary-dark to-brand-primary'
                 },
@@ -591,13 +732,97 @@ export default function ReaSoftWebsite() {
         </div>
       </section>
 
-      <Process t={t} />
+      {/* About Us Section - SEO anchor: "o-nama" */}
+      <section id={sectionIds[language].about} className="py-20 bg-slate-900">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-8">
+            <span className="bg-gradient-to-r from-brand-primary to-brand-highlight bg-clip-text text-transparent">
+              {t.about.title}
+            </span>
+          </h2>
+          <div className="max-w-4xl mx-auto">
+            <p className="text-lg md:text-xl text-slate-300 mb-8 leading-relaxed" dangerouslySetInnerHTML={{ __html: t.about.description1 }}></p>
+            <p className="text-lg md:text-xl text-slate-300 mb-8 leading-relaxed" dangerouslySetInnerHTML={{ __html: t.about.description2 }}></p>
+            <div className="grid md:grid-cols-3 gap-8 mt-12">
+              <div className="bg-slate-800 rounded-xl p-6">
+                <h3 className="text-xl font-bold text-brand-primary mb-4">{t.about.technologies.title}</h3>
+                <p className="text-slate-300">{t.about.technologies.description}</p>
+              </div>
+              <div className="bg-slate-800 rounded-xl p-6">
+                <h3 className="text-xl font-bold text-brand-secondary mb-4">{t.about.focus.title}</h3>
+                <p className="text-slate-300">{t.about.focus.description}</p>
+              </div>
+              <div className="bg-slate-800 rounded-xl p-6">
+                <h3 className="text-xl font-bold text-brand-highlight mb-4">{t.about.location.title}</h3>
+                <p className="text-slate-300">{t.about.location.description}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Case Studies/References Section - SEO anchor: "projekti" */}
+      <section id={sectionIds[language].projects} className="py-20 bg-slate-800">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-8">
+            <span className="bg-gradient-to-r from-brand-primary to-brand-highlight bg-clip-text text-transparent">
+              {t.projects.title}
+            </span>
+          </h2>
+          <p className="text-lg md:text-xl text-slate-300 mb-12 max-w-3xl mx-auto">
+            {t.projects.subtitle}
+          </p>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <motion.div 
+              className="bg-slate-900 rounded-xl p-6 border border-slate-700 hover:border-brand-primary transition-colors"
+              whileHover={{ y: -5 }}
+              transition={{ duration: 0.2 }}
+            >
+              <div className="w-16 h-16 bg-gradient-to-br from-brand-primary to-brand-highlight rounded-xl flex items-center justify-center mb-4 mx-auto">
+                <Globe className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-3">{t.projects.ecommerce.title}</h3>
+              <p className="text-slate-300 mb-4">{t.projects.ecommerce.description}</p>
+              <div className="text-sm text-brand-secondary font-medium">{t.projects.ecommerce.tech}</div>
+            </motion.div>
+
+            <motion.div 
+              className="bg-slate-900 rounded-xl p-6 border border-slate-700 hover:border-brand-secondary transition-colors"
+              whileHover={{ y: -5 }}
+              transition={{ duration: 0.2 }}
+            >
+              <div className="w-16 h-16 bg-gradient-to-br from-brand-secondary to-brand-accent rounded-xl flex items-center justify-center mb-4 mx-auto">
+                <Settings className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-3">{t.projects.crm.title}</h3>
+              <p className="text-slate-300 mb-4">{t.projects.crm.description}</p>
+              <div className="text-sm text-brand-secondary font-medium">{t.projects.crm.tech}</div>
+            </motion.div>
+
+            <motion.div 
+              className="bg-slate-900 rounded-xl p-6 border border-slate-700 hover:border-brand-highlight transition-colors"
+              whileHover={{ y: -5 }}
+              transition={{ duration: 0.2 }}
+            >
+              <div className="w-16 h-16 bg-gradient-to-br from-brand-highlight to-brand-primary rounded-xl flex items-center justify-center mb-4 mx-auto">
+                <Smartphone className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-3">{t.projects.business.title}</h3>
+              <p className="text-slate-300 mb-4">{t.projects.business.description}</p>
+              <div className="text-sm text-brand-secondary font-medium">{t.projects.business.tech}</div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      <Process t={t} language={language} />
 
       <Benefits t={t} />
 
-      <FAQ t={t} />
+      <FAQ t={t} language={language} />
 
-      <Contact t={t} />
+      <Contact t={t} language={language} />
 
       <Footer language={language} />
 

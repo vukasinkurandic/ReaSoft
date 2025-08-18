@@ -18,9 +18,10 @@ interface ContactProps {
       };
     };
   };
+  language: 'sr' | 'en';
 }
 
-export default function Contact({ t }: ContactProps) {
+export default function Contact({ t, language }: ContactProps) {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -40,8 +41,10 @@ export default function Contact({ t }: ContactProps) {
     setIsSubmitting(false);
   };
 
+  const sectionId = language === 'sr' ? 'kontakt' : 'contact';
+
   return (
-    <section id="contact" className="py-20 bg-slate-800">
+    <section id={sectionId} className="py-20 bg-slate-800">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12 sm:mb-16">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">

@@ -1,6 +1,6 @@
 'use client';
 
-import { Zap, Clock, Euro, Headphones } from 'lucide-react';
+import { Zap, Clock, TrendingUp, Headphones } from 'lucide-react';
 
 interface BenefitsProps {
   t: {
@@ -29,7 +29,7 @@ export default function Benefits({ t }: BenefitsProps) {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           {t.benefits.items.map((item: string, index: number) => {
-            const icons = [Zap, Clock, Euro, Headphones];
+            const icons = [Zap, Clock, TrendingUp, Headphones];
             const Icon = icons[index];
             return (
               <div key={index} className="text-center group px-4">
