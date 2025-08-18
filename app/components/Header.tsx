@@ -18,9 +18,10 @@ interface HeaderProps {
       contact: string;
     };
   };
+  scrollToSection: (sectionId: string) => void;
 }
 
-export default function Header({ language, setLanguage, t }: HeaderProps) {
+export default function Header({ language, setLanguage, t, scrollToSection }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // Section ID mapping for localized URLs
@@ -29,7 +30,7 @@ export default function Header({ language, setLanguage, t }: HeaderProps) {
       services: 'usluge',
       about: 'o-nama', 
       projects: 'projekti',
-      process: 'proces',
+      process: 'razvoj',
       faq: 'pitanja',
       contact: 'kontakt'
     },
@@ -41,6 +42,21 @@ export default function Header({ language, setLanguage, t }: HeaderProps) {
       faq: 'faq',
       contact: 'contact'
     }
+  };
+
+  const handleNavClick = (sectionKey: keyof typeof sectionIds.sr) => {
+    const sectionId = sectionIds[language][sectionKey];
+    
+    // Close mobile menu first
+    setIsMenuOpen(false);
+    
+    // Update URL hash
+    window.history.pushState(null, '', `/#${sectionId}`);
+    
+    // Delay scroll to allow menu close animation
+    setTimeout(() => {
+      scrollToSection(sectionId);
+    }, 300);
   };
 
   return (
@@ -69,24 +85,24 @@ export default function Header({ language, setLanguage, t }: HeaderProps) {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <a href={`/#${sectionIds[language].services}`} className="text-slate-300 hover:text-brand-primary transition-colors">
+            <button onClick={() => handleNavClick('services')} className="text-slate-300 hover:text-brand-primary transition-colors">
               {t.nav.services}
-            </a>
-            <a href={`/#${sectionIds[language].about}`} className="text-slate-300 hover:text-brand-primary transition-colors">
+            </button>
+            <button onClick={() => handleNavClick('about')} className="text-slate-300 hover:text-brand-primary transition-colors">
               {t.nav.about}
-            </a>
-            <a href={`/#${sectionIds[language].projects}`} className="text-slate-300 hover:text-brand-primary transition-colors">
+            </button>
+            <button onClick={() => handleNavClick('projects')} className="text-slate-300 hover:text-brand-primary transition-colors">
               {t.nav.projects}
-            </a>
-            <a href={`/#${sectionIds[language].process}`} className="text-slate-300 hover:text-brand-primary transition-colors">
+            </button>
+            <button onClick={() => handleNavClick('process')} className="text-slate-300 hover:text-brand-primary transition-colors">
               {t.nav.process}
-            </a>
-            <a href={`/#${sectionIds[language].faq}`} className="text-slate-300 hover:text-brand-primary transition-colors">
+            </button>
+            <button onClick={() => handleNavClick('faq')} className="text-slate-300 hover:text-brand-primary transition-colors">
               {t.nav.faq}
-            </a>
-            <a href={`/#${sectionIds[language].contact}`} className="text-slate-300 hover:text-brand-primary transition-colors">
+            </button>
+            <button onClick={() => handleNavClick('contact')} className="text-slate-300 hover:text-brand-primary transition-colors">
               {t.nav.contact}
-            </a>
+            </button>
             
             {/* Language Toggle */}
             <button
@@ -119,48 +135,42 @@ export default function Header({ language, setLanguage, t }: HeaderProps) {
             transition={{ duration: 0.3, ease: "easeInOut" }}
           >
             <div className="container mx-auto px-4 py-4 space-y-4">
-              <a 
-                href={`/#${sectionIds[language].services}`}
-                onClick={() => setIsMenuOpen(false)}
+              <button 
+                onClick={() => handleNavClick('services')}
                 className="block w-full text-left py-2 text-slate-300 hover:text-brand-primary transition-colors"
               >
                 {t.nav.services}
-              </a>
-              <a 
-                href={`/#${sectionIds[language].about}`}
-                onClick={() => setIsMenuOpen(false)}
+              </button>
+              <button 
+                onClick={() => handleNavClick('about')}
                 className="block w-full text-left py-2 text-slate-300 hover:text-brand-primary transition-colors"
               >
                 {t.nav.about}
-              </a>
-              <a 
-                href={`/#${sectionIds[language].projects}`}
-                onClick={() => setIsMenuOpen(false)}
+              </button>
+              <button 
+                onClick={() => handleNavClick('projects')}
                 className="block w-full text-left py-2 text-slate-300 hover:text-brand-primary transition-colors"
               >
                 {t.nav.projects}
-              </a>
-              <a 
-                href={`/#${sectionIds[language].process}`}
-                onClick={() => setIsMenuOpen(false)}
+              </button>
+              <button 
+                onClick={() => handleNavClick('process')}
                 className="block w-full text-left py-2 text-slate-300 hover:text-brand-primary transition-colors"
               >
                 {t.nav.process}
-              </a>
-              <a 
-                href={`/#${sectionIds[language].faq}`}
-                onClick={() => setIsMenuOpen(false)}
+              </button>
+              <button 
+                onClick={() => handleNavClick('faq')}
                 className="block w-full text-left py-2 text-slate-300 hover:text-brand-primary transition-colors"
               >
                 {t.nav.faq}
-              </a>
-              <a 
-                href={`/#${sectionIds[language].contact}`}
-                onClick={() => setIsMenuOpen(false)}
+              </button>
+              <button 
+                onClick={() => handleNavClick('contact')}
                 className="block w-full text-left py-2 text-slate-300 hover:text-brand-primary transition-colors"
               >
                 {t.nav.contact}
-              </a>
+              </button>
               <button
                 onClick={() => {
                   setLanguage(language === 'sr' ? 'en' : 'sr');

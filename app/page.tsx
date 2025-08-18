@@ -38,42 +38,41 @@ export default function ReaSoftWebsite() {
     }
   };
 
-  // Handle direct hash navigation
+  // Handle direct hash navigation ONLY on initial page load
   useEffect(() => {
-    const handleHashChange = () => {
+    const handleInitialHash = () => {
       const hash = window.location.hash.substring(1);
       if (hash) {
-        // First try direct element lookup
-        let element = document.getElementById(hash);
-        
-        // If not found, try mapping from other language
-        if (!element) {
-          const otherLang = language === 'sr' ? 'en' : 'sr';
-          const currentLangSections = sectionIds[language];
-          const otherLangSections = sectionIds[otherLang];
+        // Small delay to ensure DOM is ready
+        setTimeout(() => {
+          // First try direct element lookup
+          let element = document.getElementById(hash);
           
-          // Find corresponding section in current language
-          for (const [key, value] of Object.entries(otherLangSections)) {
-            if (value === hash) {
-              element = document.getElementById(currentLangSections[key as keyof typeof currentLangSections]);
-              break;
+          // If not found, try mapping from other language
+          if (!element) {
+            const otherLang = language === 'sr' ? 'en' : 'sr';
+            const currentLangSections = sectionIds[language];
+            const otherLangSections = sectionIds[otherLang];
+            
+            // Find corresponding section in current language
+            for (const [key, value] of Object.entries(otherLangSections)) {
+              if (value === hash) {
+                element = document.getElementById(currentLangSections[key as keyof typeof currentLangSections]);
+                break;
+              }
             }
           }
-        }
-        
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }
+          
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+          }
+        }, 100);
       }
     };
 
-    // Check for hash on initial load
-    handleHashChange();
-    
-    // Listen for hash changes
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
-  }, [language, sectionIds]);
+    // Only handle hash on initial load - NO hashchange listener
+    handleInitialHash();
+  }, []); // Remove dependencies to prevent re-running
 
   const content = {
     sr: {
@@ -384,12 +383,15 @@ export default function ReaSoftWebsite() {
   }, [isUserInteracting]);
 
   const scrollToSection = (sectionId: string) => {
-    // Update URL hash for SEO
-    window.history.pushState(null, '', `/#${sectionId}`);
-    
     const element = document.getElementById(sectionId);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      const headerHeight = 80; // Account for fixed header
+      const elementPosition = element.offsetTop - headerHeight;
+      
+      window.scrollTo({
+        top: elementPosition,
+        behavior: 'smooth'
+      });
     }
   };
 
@@ -399,6 +401,7 @@ export default function ReaSoftWebsite() {
         language={language} 
         setLanguage={setLanguage} 
         t={t} 
+        scrollToSection={scrollToSection}
       />
       
       <Hero t={t} scrollToSection={scrollToSection} />
