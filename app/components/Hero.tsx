@@ -18,7 +18,7 @@ interface HeroProps {
 
 export default function Hero({ t, scrollToSection }: HeroProps) {
   return (
-    <section id="home" className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center relative overflow-hidden pt-20">
+    <section id="home" className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center relative overflow-hidden pt-24 md:pt-20">
       <div className="container mx-auto px-4 text-center relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
@@ -39,7 +39,7 @@ export default function Hero({ t, scrollToSection }: HeroProps) {
                 y: [0, -10, 0]
               }}
               transition={{ 
-                rotate: { duration: 15, repeat: Infinity, ease: "linear" },
+                rotate: { duration: 40, repeat: Infinity, ease: "linear" },
                 y: { duration: 2, repeat: Infinity, ease: "easeInOut" }
               }}
             >
@@ -69,13 +69,13 @@ export default function Hero({ t, scrollToSection }: HeroProps) {
               <span className="text-lg">{t.hero.cta}</span>
               <Rocket className="w-5 h-5 group-hover:rotate-12 transition-transform" />
             </button>
-            <button
-              onClick={() => scrollToSection('faq')}
+            <a
+              href="/about-us"
               className="group px-8 py-4 border-2 border-brand-accent text-brand-accent font-semibold rounded-xl hover:bg-brand-accent hover:text-slate-700 transition-all duration-300 flex items-center space-x-2"
             >
               <span className="text-lg">{t.hero.cta2}</span>
               <Code className="w-5 h-5 group-hover:scale-110 transition-transform" />
-            </button>
+            </a>
           </div>
         </motion.div>
       </div>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <!-- Main page - Serbian (default) -->
+  <url>
+    <loc>https://reasoft.rs/</loc>
+    <lastmod>2024-12-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://reasoft.rs/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://reasoft.rs/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://reasoft.rs/"/>
+  </url>
+  
+  <!-- Main page - English -->
+  <url>
+    <loc>https://reasoft.rs/?lang=en</loc>
+    <lastmod>2024-12-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://reasoft.rs/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://reasoft.rs/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://reasoft.rs/"/>
+  </url>
+  
+  <!-- Services section -->
+  <url>
+    <loc>https://reasoft.rs/#usluge</loc>
+    <lastmod>2024-12-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://reasoft.rs/?lang=en#services"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://reasoft.rs/#usluge"/>
+  </url>
+  
+  <!-- About page -->
+  <url>
+    <loc>https://reasoft.rs/about-us</loc>
+    <lastmod>2024-12-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://reasoft.rs/about-us"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://reasoft.rs/about-us"/>
+  </url>
+  
+  <!-- About section -->
+  <url>
+    <loc>https://reasoft.rs/#o-nama</loc>
+    <lastmod>2024-12-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://reasoft.rs/?lang=en#about"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://reasoft.rs/#o-nama"/>
+  </url>
+  
+  <!-- Projects section -->
+  <url>
+    <loc>https://reasoft.rs/#projekti</loc>
+    <lastmod>2024-12-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://reasoft.rs/?lang=en#projects"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://reasoft.rs/#projekti"/>
+  </url>
+  
+  <!-- Process section -->
+  <url>
+    <loc>https://reasoft.rs/#razvoj</loc>
+    <lastmod>2024-12-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://reasoft.rs/?lang=en#process"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://reasoft.rs/#razvoj"/>
+  </url>
+  
+  <!-- FAQ section -->
+  <url>
+    <loc>https://reasoft.rs/#pitanja</loc>
+    <lastmod>2024-12-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://reasoft.rs/?lang=en#faq"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://reasoft.rs/#pitanja"/>
+  </url>
+  
+  <!-- Contact section -->
+  <url>
+    <loc>https://reasoft.rs/#kontakt</loc>
+    <lastmod>2024-12-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://reasoft.rs/?lang=en#contact"/>
+    <xhtml:link rel="alternate" hreflang="sr" href="https://reasoft.rs/#kontakt"/>
+  </url>
+</urlset>

@@ -49,7 +49,8 @@ export const metadata: Metadata = {
     canonical: 'https://reasoft.rs',
     languages: {
       'sr': 'https://reasoft.rs',
-      'en': 'https://reasoft.rs?lang=en'
+      'en': 'https://reasoft.rs?lang=en',
+      'x-default': 'https://reasoft.rs'
     }
   },
 };
@@ -67,6 +68,11 @@ export default function RootLayout({ children }: Props) {
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#D6A99D" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        
+        {/* Hreflang links for multilingual SEO */}
+        <link rel="alternate" hrefLang="sr" href="https://reasoft.rs" />
+        <link rel="alternate" hrefLang="en" href="https://reasoft.rs?lang=en" />
+        <link rel="alternate" hrefLang="x-default" href="https://reasoft.rs" />
         
         {/* Structured Data for Local Business */}
         <script

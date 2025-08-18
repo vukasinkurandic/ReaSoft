@@ -746,7 +746,7 @@ export default function ReaSoftWebsite() {
           <div className="max-w-4xl mx-auto">
             <p className="text-lg md:text-xl text-slate-300 mb-8 leading-relaxed" dangerouslySetInnerHTML={{ __html: t.about.description1 }}></p>
             <p className="text-lg md:text-xl text-slate-300 mb-8 leading-relaxed" dangerouslySetInnerHTML={{ __html: t.about.description2 }}></p>
-            <div className="grid md:grid-cols-3 gap-8 mt-12">
+            <div className="grid md:grid-cols-3 gap-8 mt-12 mb-12">
               <div className="bg-slate-800 rounded-xl p-6">
                 <h3 className="text-xl font-bold text-brand-primary mb-4">{t.about.technologies.title}</h3>
                 <p className="text-slate-300">{t.about.technologies.description}</p>
@@ -760,6 +760,22 @@ export default function ReaSoftWebsite() {
                 <p className="text-slate-300">{t.about.location.description}</p>
               </div>
             </div>
+            
+            {/* Link to detailed About Us page */}
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <a
+                href="/about-us"
+                className="inline-flex items-center px-8 py-3 bg-gradient-to-r from-brand-secondary to-brand-accent rounded-full text-white font-semibold hover:from-brand-secondary-dark hover:to-brand-accent-dark transition-all duration-300 shadow-lg hover:shadow-xl"
+              >
+                {language === 'sr' ? 'Saznajte više o nama' : 'Learn more about us'}
+                <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </a>
+            </motion.div>
           </div>
         </div>
       </section>

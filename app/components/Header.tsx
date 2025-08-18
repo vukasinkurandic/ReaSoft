@@ -110,7 +110,7 @@ export default function Header({ language, setLanguage, t, scrollToSection }: He
               className="flex items-center space-x-1 px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 transition-colors"
             >
               <Globe className="w-4 h-4" />
-              <span className="text-sm font-medium">{language.toUpperCase()}</span>
+              <span className="text-sm font-medium">{language === 'sr' ? 'EN' : 'SR'}</span>
             </button>
           </nav>
 
@@ -179,7 +179,7 @@ export default function Header({ language, setLanguage, t, scrollToSection }: He
                 className="flex items-center space-x-2 py-2 text-slate-300 hover:text-brand-primary transition-colors"
               >
                 <Globe className="w-4 h-4" />
-                <span className="text-sm font-medium">{language.toUpperCase()}</span>
+                <span className="text-sm font-medium">{language === 'sr' ? 'EN' : 'SR'}</span>
               </button>
             </div>
           </motion.div>

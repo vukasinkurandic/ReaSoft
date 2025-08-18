@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Rocket } from 'lucide-react';
 
@@ -21,6 +21,45 @@ interface FAQProps {
 export default function FAQ({ t, language }: FAQProps) {
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
   const sectionId = language === 'sr' ? 'pitanja' : 'faq';
+
+  // Generate FAQ Schema JSON-LD
+  const generateFAQSchema = () => {
+    return {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": t.faq.questions.map((faq) => ({
+        "@type": "Question",
+        "name": faq.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.answer
+        }
+      }))
+    };
+  };
+
+  // Add FAQ schema to head
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.text = JSON.stringify(generateFAQSchema());
+    script.id = 'faq-schema';
+    
+    // Remove existing FAQ schema if present
+    const existingSchema = document.getElementById('faq-schema');
+    if (existingSchema) {
+      existingSchema.remove();
+    }
+    
+    document.head.appendChild(script);
+    
+    return () => {
+      const schemaElement = document.getElementById('faq-schema');
+      if (schemaElement) {
+        schemaElement.remove();
+      }
+    };
+  }, [t.faq.questions]);
 
   return (
     <section id={sectionId} className="py-20 bg-slate-800 relative overflow-hidden">
