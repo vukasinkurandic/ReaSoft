@@ -5,7 +5,6 @@ const nextConfig = {
     optimizePackageImports: ['framer-motion', 'lucide-react'],
   },
   
-  compress: true,
   // Optimize images for Netlify
   images: {
     formats: ['image/webp', 'image/avif'],
