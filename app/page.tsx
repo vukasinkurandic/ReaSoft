@@ -9,6 +9,8 @@ export default function ReaSoftWebsite() {
   const [language, setLanguage] = useState<'sr' | 'en'>('sr');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
+  const [activeServiceCard, setActiveServiceCard] = useState(0);
+  const [isUserInteracting, setIsUserInteracting] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -167,6 +169,17 @@ export default function ReaSoftWebsite() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Auto-rotate service cards
+  useEffect(() => {
+    if (isUserInteracting) return;
+    
+    const interval = setInterval(() => {
+      setActiveServiceCard((prev) => (prev + 1) % 6);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [isUserInteracting]);
 
   const scrollToTop = () => {
     const scrollDuration = 1500; // 1.5 sekundi
@@ -369,7 +382,7 @@ export default function ReaSoftWebsite() {
       </section>
 
       {/* Services Section */}
-      <section id="services" className="py-20 bg-slate-800">
+      <section id="services" className="py-20 bg-slate-800 overflow-hidden">
         <div className="container mx-auto px-4">
           <motion.div
             className="text-center mb-16"
@@ -388,52 +401,323 @@ export default function ReaSoftWebsite() {
             </p>
           </motion.div>
 
-          <ServiceCards
-            services={[
-              { 
-                icon: Globe, 
-                title: t.services.webApps.title, 
-                description: t.services.webApps.description,
-                color: 'primary',
-                bgGradient: 'bg-gradient-to-br from-brand-primary to-brand-primary-dark'
-              },
-              { 
-                icon: Smartphone, 
-                title: t.services.websites.title, 
-                description: t.services.websites.description,
-                color: 'secondary',
-                bgGradient: 'bg-gradient-to-br from-brand-secondary to-brand-secondary-dark'
-              },
-              { 
-                icon: Euro, 
-                title: t.services.ecommerce.title, 
-                description: t.services.ecommerce.description,
-                color: 'highlight',
-                bgGradient: 'bg-gradient-to-br from-brand-highlight to-brand-highlight-dark'
-              },
-              { 
-                icon: Settings, 
-                title: t.services.automation.title, 
-                description: t.services.automation.description,
-                color: 'accent',
-                bgGradient: 'bg-gradient-to-br from-brand-accent to-brand-accent-dark'
-              },
-              { 
-                icon: Monitor, 
-                title: t.services.desktop.title, 
-                description: t.services.desktop.description,
-                color: 'primary',
-                bgGradient: 'bg-gradient-to-br from-brand-primary-dark to-brand-primary'
-              },
-              { 
-                icon: Headphones, 
-                title: t.services.consulting.title, 
-                description: t.services.consulting.description,
-                color: 'secondary',
-                bgGradient: 'bg-gradient-to-br from-brand-secondary-dark to-brand-secondary'
-              }
-            ]}
-          />
+          {/* Desktop: Stacked Cards Layout */}
+          <div className="hidden lg:block">
+            <div className="grid grid-cols-12 gap-8 items-center min-h-[600px]">
+              {/* Left Side - Text Content */}
+              <div className="col-span-5">
+                <div className="space-y-6 min-h-[400px] flex flex-col justify-center">
+                  <div className="flex items-center space-x-3 mb-4">
+                    <motion.div
+                      key={`icon-${activeServiceCard}`}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      {activeServiceCard === 0 && <Globe className="w-8 h-8 text-brand-primary" />}
+                      {activeServiceCard === 1 && <Smartphone className="w-8 h-8 text-brand-secondary" />}
+                      {activeServiceCard === 2 && <Euro className="w-8 h-8 text-brand-highlight" />}
+                      {activeServiceCard === 3 && <Settings className="w-8 h-8 text-brand-accent" />}
+                      {activeServiceCard === 4 && <Monitor className="w-8 h-8 text-brand-primary" />}
+                      {activeServiceCard === 5 && <Headphones className="w-8 h-8 text-brand-secondary" />}
+                    </motion.div>
+                    <span className="text-sm font-medium text-slate-400">0{activeServiceCard + 1}/06</span>
+                  </div>
+                  
+                  <motion.h3 
+                    key={`title-${activeServiceCard}`}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="text-4xl font-bold text-white mb-4 min-h-[120px] flex items-center"
+                  >
+                    {activeServiceCard === 0 && t.services.webApps.title}
+                    {activeServiceCard === 1 && t.services.websites.title}
+                    {activeServiceCard === 2 && t.services.ecommerce.title}
+                    {activeServiceCard === 3 && t.services.automation.title}
+                    {activeServiceCard === 4 && t.services.desktop.title}
+                    {activeServiceCard === 5 && t.services.consulting.title}
+                  </motion.h3>
+                  
+                  <motion.p 
+                    key={`desc-${activeServiceCard}`}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.1 }}
+                    className="text-xl text-slate-300 leading-relaxed min-h-[80px]"
+                  >
+                    {activeServiceCard === 0 && t.services.webApps.description}
+                    {activeServiceCard === 1 && t.services.websites.description}
+                    {activeServiceCard === 2 && t.services.ecommerce.description}
+                    {activeServiceCard === 3 && t.services.automation.description}
+                    {activeServiceCard === 4 && t.services.desktop.description}
+                    {activeServiceCard === 5 && t.services.consulting.description}
+                  </motion.p>
+
+                  {/* Navigation Dots */}
+                  <div className="flex space-x-3 pt-6">
+                    {[0, 1, 2, 3, 4, 5].map((index) => (
+                      <button
+                        key={index}
+                        onClick={() => {
+                          setActiveServiceCard(index);
+                          setIsUserInteracting(true);
+                          setTimeout(() => setIsUserInteracting(false), 8000);
+                        }}
+                        className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                          index === activeServiceCard 
+                            ? 'bg-brand-primary scale-125' 
+                            : 'bg-slate-600 hover:bg-slate-500'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Side - Stacked Cards */}
+              <div className="col-span-7 relative h-[600px]">
+                <div 
+                  className="relative w-full h-full flex items-center justify-center"
+                  onMouseEnter={() => setIsUserInteracting(true)}
+                  onMouseLeave={() => {
+                    setTimeout(() => setIsUserInteracting(false), 3000);
+                  }}
+                >
+                  {[0, 1, 2, 3, 4, 5].map((index) => {
+                    const isActive = index === activeServiceCard;
+                    const offset = index - activeServiceCard;
+                    const bgColors = [
+                      'from-brand-primary to-brand-primary-dark',
+                      'from-brand-secondary to-brand-secondary-dark', 
+                      'from-brand-highlight to-brand-highlight-dark',
+                      'from-brand-accent to-brand-accent-dark',
+                      'from-brand-primary-dark to-brand-primary',
+                      'from-brand-secondary-dark to-brand-secondary'
+                    ];
+
+                    // Definišemo različite pozicije za neaktivne kartice
+                    const getCardPosition = () => {
+                      if (isActive) {
+                        return {
+                          x: 0,
+                          y: 0,
+                          rotateZ: 0,
+                          rotateY: 0,
+                          rotateX: 0,
+                          scale: 1,
+                          opacity: 1,
+                          zIndex: 10
+                        };
+                      }
+
+                      // Kartice iza aktivne (pozitivni offset)
+                      if (offset > 0) {
+                        const positions = [
+                          { x: 60, y: 35, rotateZ: 8, rotateY: 15, rotateX: 5 },    // kartica 1 pozicija iza
+                          { x: 45, y: 65, rotateZ: -18, rotateY: 25, rotateX: 8 },  // kartica 2 pozicije iza - rotirana levo
+                          { x: 85, y: 50, rotateZ: 15, rotateY: 35, rotateX: 10 },  // kartica 3 pozicije iza
+                          { x: 75, y: 80, rotateZ: -12, rotateY: 40, rotateX: 12 }, // kartica 4 pozicije iza
+                          { x: 95, y: 60, rotateZ: 20, rotateY: 45, rotateX: 15 }   // kartica 5 pozicija iza
+                        ];
+                        const pos = positions[offset - 1] || positions[4];
+                        
+                        return {
+                          x: pos.x,
+                          y: pos.y,
+                          rotateZ: pos.rotateZ,
+                          rotateY: pos.rotateY,
+                          rotateX: pos.rotateX,
+                          scale: 0.85 - (offset * 0.05),
+                          opacity: 0.6,
+                          zIndex: 10 - offset
+                        };
+                      }
+
+                      // Kartice ispred aktivne (negativni offset)
+                      if (offset < 0) {
+                        const positions = [
+                          { x: -60, y: 35, rotateZ: -8, rotateY: -15, rotateX: 5 },   // kartica 1 pozicija ispred
+                          { x: -45, y: 65, rotateZ: 18, rotateY: -25, rotateX: 8 },   // kartica 2 pozicije ispred - rotirana desno
+                          { x: -85, y: 50, rotateZ: -15, rotateY: -35, rotateX: 10 }, // kartica 3 pozicije ispred
+                          { x: -75, y: 80, rotateZ: 12, rotateY: -40, rotateX: 12 },  // kartica 4 pozicije ispred
+                          { x: -95, y: 60, rotateZ: -20, rotateY: -45, rotateX: 15 }  // kartica 5 pozicija ispred
+                        ];
+                        const pos = positions[Math.abs(offset) - 1] || positions[4];
+                        
+                        return {
+                          x: pos.x,
+                          y: pos.y,
+                          rotateZ: pos.rotateZ,
+                          rotateY: pos.rotateY,
+                          rotateX: pos.rotateX,
+                          scale: 0.85 - (Math.abs(offset) * 0.05),
+                          opacity: 0.6,
+                          zIndex: 10 - Math.abs(offset)
+                        };
+                      }
+
+                      return { x: 0, y: 0, rotateZ: 0, rotateY: 0, rotateX: 0, scale: 1, opacity: 1, zIndex: 10 };
+                    };
+
+                    const position = getCardPosition();
+
+                    return (
+                      <motion.div
+                        key={index}
+                        className={`absolute w-96 h-[450px] rounded-2xl bg-gradient-to-br ${bgColors[index]} shadow-2xl cursor-pointer border border-white/10`}
+                        initial={false}
+                        animate={{
+                          x: position.x,
+                          y: position.y,
+                          rotateZ: position.rotateZ,
+                          rotateY: position.rotateY,
+                          rotateX: position.rotateX,
+                          scale: position.scale,
+                          opacity: position.opacity,
+                        }}
+                        transition={{
+                          duration: 1.2,
+                          ease: [0.23, 1, 0.32, 1], // easeOutQuart za glatku animaciju
+                          type: "spring",
+                          stiffness: 100,
+                          damping: 20
+                        }}
+                        style={{
+                          zIndex: position.zIndex,
+                          transformStyle: 'preserve-3d',
+                          transformOrigin: 'center center'
+                        }}
+                        drag="x"
+                        dragConstraints={{ left: -150, right: 150 }}
+                        onDragStart={() => {
+                          setIsUserInteracting(true);
+                        }}
+                        onDragEnd={(event, info) => {
+                          if (info.offset.x > 40) {
+                            setActiveServiceCard((prev) => (prev - 1 + 6) % 6);
+                          } else if (info.offset.x < -40) {
+                            setActiveServiceCard((prev) => (prev + 1) % 6);
+                          }
+                          setTimeout(() => setIsUserInteracting(false), 8000);
+                        }}
+                        onClick={() => {
+                          setActiveServiceCard(index);
+                          setIsUserInteracting(true);
+                          setTimeout(() => setIsUserInteracting(false), 8000);
+                        }}
+                        whileHover={{ 
+                          scale: isActive ? 1.02 : position.scale * 1.05,
+                          rotateZ: isActive ? 0 : position.rotateZ * 0.8,
+                          transition: { duration: 0.3 }
+                        }}
+                      >
+                        <div className="w-full h-full p-10 flex flex-col items-center justify-center text-center relative overflow-hidden">
+                          {/* Background Pattern */}
+                          <div className="absolute inset-0 opacity-10">
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-white rounded-full transform translate-x-16 -translate-y-16"></div>
+                            <div className="absolute bottom-0 left-0 w-24 h-24 bg-white rounded-full transform -translate-x-12 translate-y-12"></div>
+                          </div>
+                          
+                          {/* Service Icon */}
+                          <div className={`w-28 h-28 rounded-3xl flex items-center justify-center mb-8 backdrop-blur-sm transition-all duration-300 ${
+                            index === 1 || index === 3 ? 'bg-slate-800/70' : 'bg-white/25'
+                          }`}>
+                            {index === 0 && <Globe className="w-14 h-14 text-white drop-shadow-lg" />}
+                            {index === 1 && <Smartphone className="w-14 h-14 text-slate-700 drop-shadow-lg" />}
+                            {index === 2 && <Euro className="w-14 h-14 text-white drop-shadow-lg" />}
+                            {index === 3 && <Settings className="w-14 h-14 text-slate-700 drop-shadow-lg" />}
+                            {index === 4 && <Monitor className="w-14 h-14 text-white drop-shadow-lg" />}
+                            {index === 5 && <Headphones className="w-14 h-14 text-slate-700 drop-shadow-lg" />}
+                          </div>
+                          
+                          {/* Service Title */}
+                          <h4 className={`text-3xl font-bold mb-6 leading-tight ${
+                            index === 1 || index === 3 || index === 5 ? 'text-slate-800' : 'text-white'
+                          } drop-shadow-md`}>
+                            {index === 0 && t.services.webApps.title}
+                            {index === 1 && t.services.websites.title}
+                            {index === 2 && t.services.ecommerce.title}
+                            {index === 3 && t.services.automation.title}
+                            {index === 4 && t.services.desktop.title}
+                            {index === 5 && t.services.consulting.title}
+                          </h4>
+
+                          {/* Decorative Elements */}
+                          <div className={`absolute top-6 right-6 w-10 h-10 rounded-full ${
+                            index === 1 || index === 3 ? 'bg-slate-800/25' : 'bg-white/15'
+                          }`}></div>
+                          <div className={`absolute bottom-6 left-6 w-16 h-16 rounded-full ${
+                            index === 1 || index === 3 ? 'bg-slate-800/15' : 'bg-white/10'
+                          }`}></div>
+                          
+                          {/* Active indicator */}
+                          {isActive && (
+                            <motion.div
+                              className="absolute inset-0 rounded-2xl border-2 border-white/30"
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              transition={{ duration: 0.3 }}
+                            />
+                          )}
+                        </div>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Mobile: Original Grid Layout */}
+          <div className="lg:hidden">
+            <ServiceCards
+              services={[
+                { 
+                  icon: Globe, 
+                  title: t.services.webApps.title, 
+                  description: t.services.webApps.description,
+                  color: 'primary',
+                  bgGradient: 'bg-gradient-to-br from-brand-primary to-brand-primary-dark'
+                },
+                { 
+                  icon: Smartphone, 
+                  title: t.services.websites.title, 
+                  description: t.services.websites.description,
+                  color: 'secondary',
+                  bgGradient: 'bg-gradient-to-br from-brand-secondary to-brand-secondary-dark'
+                },
+                { 
+                  icon: Euro, 
+                  title: t.services.ecommerce.title, 
+                  description: t.services.ecommerce.description,
+                  color: 'highlight',
+                  bgGradient: 'bg-gradient-to-br from-brand-highlight to-brand-highlight-dark'
+                },
+                { 
+                  icon: Settings, 
+                  title: t.services.automation.title, 
+                  description: t.services.automation.description,
+                  color: 'accent',
+                  bgGradient: 'bg-gradient-to-br from-brand-accent to-brand-accent-dark'
+                },
+                { 
+                  icon: Monitor, 
+                  title: t.services.desktop.title, 
+                  description: t.services.desktop.description,
+                  color: 'primary',
+                  bgGradient: 'bg-gradient-to-br from-brand-primary-dark to-brand-primary'
+                },
+                { 
+                  icon: Headphones, 
+                  title: t.services.consulting.title, 
+                  description: t.services.consulting.description,
+                  color: 'secondary',
+                  bgGradient: 'bg-gradient-to-br from-brand-secondary-dark to-brand-secondary'
+                }
+              ]}
+            />
+          </div>
         </div>
       </section>
 
@@ -678,15 +962,15 @@ export default function ReaSoftWebsite() {
                     )}
                   </div>
                   
-                  {/* Planet Number */}
-                  <motion.span 
-                    className="text-3xl font-bold text-white z-10 relative drop-shadow-lg"
+                  {/* Planet SVG */}
+                  <motion.div 
+                    className="w-16 h-16 z-10 relative drop-shadow-lg"
                     animate={{
                       scale: [1, 1.1, 1],
-                      textShadow: [
-                        "0 0 0 rgba(255, 255, 255, 0)",
-                        "0 0 20px rgba(255, 255, 255, 0.8)",
-                        "0 0 0 rgba(255, 255, 255, 0)"
+                      filter: [
+                        "drop-shadow(0 0 0 rgba(255, 255, 255, 0))",
+                        "drop-shadow(0 0 20px rgba(255, 255, 255, 0.8))",
+                        "drop-shadow(0 0 0 rgba(255, 255, 255, 0))"
                       ]
                     }}
                     transition={{
@@ -696,8 +980,103 @@ export default function ReaSoftWebsite() {
                       ease: "easeInOut"
                     }}
                   >
-                    {step.number}
-                  </motion.span>
+                    {/* Planet 1 - Mercury (Konsultacija) */}
+                    {index === 0 && (
+                      <svg viewBox="0 0 64 64" className="w-full h-full">
+                        <defs>
+                          <radialGradient id="mercury-grad" cx="0.3" cy="0.3" r="0.8">
+                            <stop offset="0%" stopColor="#fbbf24" />
+                            <stop offset="50%" stopColor="#f59e0b" />
+                            <stop offset="100%" stopColor="#d97706" />
+                          </radialGradient>
+                        </defs>
+                        <circle cx="32" cy="32" r="28" fill="url(#mercury-grad)" />
+                        <ellipse cx="24" cy="28" rx="3" ry="2" fill="#f59e0b" opacity="0.6" />
+                        <ellipse cx="42" cy="36" rx="4" ry="2.5" fill="#f59e0b" opacity="0.6" />
+                        <ellipse cx="28" cy="42" rx="2.5" ry="1.5" fill="#f59e0b" opacity="0.6" />
+                        <circle cx="20" cy="20" r="1.5" fill="#fef3c7" opacity="0.8" />
+                        <circle cx="45" cy="25" r="1" fill="#fef3c7" opacity="0.8" />
+                      </svg>
+                    )}
+
+                    {/* Planet 2 - Venus (Planiranje) */}
+                    {index === 1 && (
+                      <svg viewBox="0 0 64 64" className="w-full h-full">
+                        <defs>
+                          <radialGradient id="venus-grad" cx="0.3" cy="0.3" r="0.8">
+                            <stop offset="0%" stopColor="#fb7185" />
+                            <stop offset="50%" stopColor="#f43f5e" />
+                            <stop offset="100%" stopColor="#e11d48" />
+                          </radialGradient>
+                        </defs>
+                        <circle cx="32" cy="32" r="28" fill="url(#venus-grad)" />
+                        <path d="M 15 25 Q 32 15 45 28 Q 32 35 20 30" fill="#fda4af" opacity="0.5" />
+                        <path d="M 20 40 Q 35 38 48 45 Q 35 48 25 45" fill="#fda4af" opacity="0.5" />
+                        <circle cx="38" cy="22" r="2" fill="#fecdd3" opacity="0.7" />
+                        <circle cx="25" cy="38" r="1.5" fill="#fecdd3" opacity="0.7" />
+                      </svg>
+                    )}
+
+                    {/* Planet 3 - Earth (Razvoj) */}
+                    {index === 2 && (
+                      <svg viewBox="0 0 64 64" className="w-full h-full">
+                        <defs>
+                          <radialGradient id="earth-grad" cx="0.3" cy="0.3" r="0.8">
+                            <stop offset="0%" stopColor="#3b82f6" />
+                            <stop offset="50%" stopColor="#1d4ed8" />
+                            <stop offset="100%" stopColor="#1e40af" />
+                          </radialGradient>
+                        </defs>
+                        <circle cx="32" cy="32" r="28" fill="url(#earth-grad)" />
+                        <path d="M 12 30 Q 20 25 28 28 Q 35 30 40 25 Q 48 28 52 35" fill="#10b981" opacity="0.8" />
+                        <path d="M 8 45 Q 18 42 25 45 Q 32 47 38 44 Q 45 42 55 48" fill="#10b981" opacity="0.8" />
+                        <ellipse cx="22" cy="20" rx="6" ry="4" fill="#10b981" opacity="0.8" />
+                        <ellipse cx="45" cy="38" rx="4" ry="3" fill="#10b981" opacity="0.8" />
+                        <circle cx="28" cy="35" r="2" fill="#fef3c7" opacity="0.6" />
+                        <circle cx="42" cy="25" r="1.5" fill="#f3f4f6" opacity="0.9" />
+                      </svg>
+                    )}
+
+                    {/* Planet 4 - Mars (Testiranje) */}
+                    {index === 3 && (
+                      <svg viewBox="0 0 64 64" className="w-full h-full">
+                        <defs>
+                          <radialGradient id="mars-grad" cx="0.3" cy="0.3" r="0.8">
+                            <stop offset="0%" stopColor="#f97316" />
+                            <stop offset="50%" stopColor="#ea580c" />
+                            <stop offset="100%" stopColor="#c2410c" />
+                          </radialGradient>
+                        </defs>
+                        <circle cx="32" cy="32" r="28" fill="url(#mars-grad)" />
+                        <circle cx="20" cy="25" r="4" fill="#dc2626" opacity="0.7" />
+                        <circle cx="42" cy="35" r="5" fill="#dc2626" opacity="0.7" />
+                        <circle cx="35" cy="18" r="2.5" fill="#dc2626" opacity="0.7" />
+                        <circle cx="18" cy="45" r="3" fill="#dc2626" opacity="0.7" />
+                        <ellipse cx="48" cy="48" rx="3" ry="2" fill="#dc2626" opacity="0.7" />
+                        <path d="M 25 40 L 35 38 L 30 45 Z" fill="#fed7aa" opacity="0.8" />
+                      </svg>
+                    )}
+
+                    {/* Planet 5 - Jupiter (Isporuka) */}
+                    {index === 4 && (
+                      <svg viewBox="0 0 64 64" className="w-full h-full">
+                        <defs>
+                          <radialGradient id="jupiter-grad" cx="0.3" cy="0.3" r="0.8">
+                            <stop offset="0%" stopColor="#8b5cf6" />
+                            <stop offset="50%" stopColor="#7c3aed" />
+                            <stop offset="100%" stopColor="#6d28d9" />
+                          </radialGradient>
+                        </defs>
+                        <circle cx="32" cy="32" r="28" fill="url(#jupiter-grad)" />
+                        <ellipse cx="32" cy="20" rx="25" ry="3" fill="#a78bfa" opacity="0.6" />
+                        <ellipse cx="32" cy="28" rx="25" ry="2.5" fill="#c4b5fd" opacity="0.5" />
+                        <ellipse cx="32" cy="36" rx="25" ry="3" fill="#a78bfa" opacity="0.6" />
+                        <ellipse cx="32" cy="44" rx="25" ry="2.5" fill="#c4b5fd" opacity="0.5" />
+                        <circle cx="45" cy="32" r="6" fill="#f43f5e" opacity="0.8" />
+                        <circle cx="45" cy="32" r="3" fill="#dc2626" opacity="0.9" />
+                      </svg>
+                    )}
+                  </motion.div>
                 </motion.div>
                 
                 {/* Step Content */}
