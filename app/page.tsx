@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Globe, Menu, X, Zap, Code, Rocket, Monitor, Smartphone, Clock, Euro, Headphones, Send, Mail, Settings } from 'lucide-react';
+import { Globe, Menu, X, Zap, Code, Rocket, Monitor, Smartphone, Clock, Euro, Headphones, Send, Mail, Settings, ChevronDown } from 'lucide-react';
 import ServiceCards from './components/ServiceCards';
 
 export default function ReaSoftWebsite() {
@@ -11,6 +11,7 @@ export default function ReaSoftWebsite() {
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [activeServiceCard, setActiveServiceCard] = useState(0);
   const [isUserInteracting, setIsUserInteracting] = useState(false);
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -21,7 +22,7 @@ export default function ReaSoftWebsite() {
 
   const content = {
     sr: {
-      nav: { home: 'Početna', services: 'Usluge', process: 'Kako radimo', contact: 'Kontakt' },
+      nav: { home: 'Početna', services: 'Usluge', process: 'Kako radimo', faq: 'Pitanja', contact: 'Kontakt' },
       hero: {
         headline: 'Imate dosadan posao?',
         subheadline: 'Mi ga činimo jednostavnim u nekoliko klikova!',
@@ -75,6 +76,44 @@ export default function ReaSoftWebsite() {
         subtitle: 'Vaš partner za digitalne inovacije',
         items: ['Automatizujemo dosadne zadatke', 'Štedimo vaše vreme i novac', 'Jednostavna rešenja u nekoliko klikova', 'Podrška 24/7']
       },
+      faq: {
+        title: 'Često postavljana pitanja',
+        subtitle: 'Odgovori na sve što vas zanima o našoj saradnji',
+        questions: [
+          {
+            question: 'Koliko košta izrada sajta ili aplikacije?',
+            answer: 'Cena zavisi od složenosti projekta. Jednostavan sajt može biti povoljan i brzo gotov, dok ozbiljnije aplikacije i webshopovi zahtevaju više rada i planiranja. Mi uvek radimo realnu procenu prema vašim potrebama, da dobijete najbolji odnos cena, kvalitet i trajnost.'
+          },
+          {
+            question: 'Koliko traje izrada?',
+            answer: 'Svi žele da posao bude gotov "za juče", ali da bi projekat radio besprekorno, potrebno je vreme. Manji sajtovi mogu biti gotovi u roku od par nedelja, dok aplikacije zahtevaju mesec i više. Naš cilj je da budete zadovoljni rešenjem, a ne da žurimo po svaku cenu.'
+          },
+          {
+            question: 'Šta je potrebno da vi obezbedite, a šta radimo mi?',
+            answer: 'Vi dajete osnovne informacije: tekstove, slike i ideju kako želite da vas vide klijenti. Mi radimo sve ostalo: dizajn, razvoj, testiranje i lansiranje. Vodimo ceo proces i vodimo računa da ne gubite vreme na tehničke detalje.'
+          },
+          {
+            question: 'Da li mi samo kupujemo uslugu ili smo partneri?',
+            answer: 'Mi nismo "prodavci sajtova". Radimo rame uz rame sa vama i zajedno donosimo odluke. Na ovaj način, dobijate rešenje koje odgovara baš vašem biznisu, a ne nešto generičko. Na nas uvek možete računati i posle isporuke.'
+          },
+          {
+            question: 'Da li se naša saradnja završava kada sajt ili aplikacija bude gotova?',
+            answer: 'Ne. Formalno jeste, ali u praksi ostajemo uz vas. Nudimo podršku, održavanje, dodatni razvoj i unapređenja. Prava vrednost nije samo u isporuci, već u partnerstvu koje traje.'
+          },
+          {
+            question: 'Šta ako nisam zadovoljan ili želim da odustanem?',
+            answer: 'U ranoj fazi, ako rad nije odmakao, moguće je obustaviti projekat. Ako je već uloženo vreme, dogovaramo se fer i transparentno. Nama je važnije da gradimo poverenje nego da "po svaku cenu" završimo posao.'
+          },
+          {
+            question: 'Kako izgleda sam proces saradnje?',
+            answer: 'Proces je jasan i pregledan: Razgovaramo i definišemo potrebe. Napravimo plan i okvirnu cenu. Radimo prototip/dizajn i uključujemo vas u komentare. Razvijamo i testiramo. Pokrećemo projekat online. Po želji, ostajemo uz vas kroz podršku i dalji razvoj.'
+          },
+          {
+            question: 'Zašto nije moguće da bude "brzo i jeftino"?',
+            answer: 'Razumemo da svako voli da prođe što povoljnije i da posao bude gotov odmah. Međutim, kvalitetan softver zahteva planiranje, razvoj i testiranje. Ako želite rešenje koje će zaista raditi, donositi klijente i trajati godinama, ulaže se i vreme i znanje. Na kraju, to se uvek isplati više nego "najbrže i najjeftinije" rešenje.'
+          }
+        ]
+      },
       contact: {
         title: 'Kontaktirajte nas',
         subtitle: 'Spremni smo da realizujemo vaš projekat',
@@ -89,7 +128,7 @@ export default function ReaSoftWebsite() {
       }
     },
     en: {
-      nav: { home: 'Home', services: 'Services', process: 'How We Work', contact: 'Contact' },
+      nav: { home: 'Home', services: 'Services', process: 'How We Work', faq: 'FAQ', contact: 'Contact' },
       hero: {
         headline: 'You have a boring job?',
         subheadline: 'We make it easy in a few clicks!',
@@ -142,6 +181,44 @@ export default function ReaSoftWebsite() {
         title: 'Why ReaSoft?',
         subtitle: 'Your partner for digital innovations',
         items: ['We automate boring tasks', 'We save your time and money', 'Simple solutions in a few clicks', '24/7 Support']
+      },
+      faq: {
+        title: 'Frequently Asked Questions',
+        subtitle: 'Answers to everything you want to know about our collaboration',
+        questions: [
+          {
+            question: 'How much does website or app development cost?',
+            answer: 'The price depends on project complexity. A simple website can be affordable and quick to complete, while serious applications and webshops require more work and planning. We always provide realistic estimates based on your needs to get the best price, quality and durability ratio.'
+          },
+          {
+            question: 'How long does development take?',
+            answer: 'Everyone wants the job done "yesterday", but for a project to work flawlessly, time is needed. Smaller websites can be ready in a few weeks, while applications require a month or more. Our goal is for you to be satisfied with the solution, not to rush at any cost.'
+          },
+          {
+            question: 'What do you need to provide, and what do we do?',
+            answer: 'You provide basic information: texts, images and the idea of how you want clients to see you. We do everything else: design, development, testing and launch. We manage the entire process and make sure you don\'t waste time on technical details.'
+          },
+          {
+            question: 'Are we just buying a service or are we partners?',
+            answer: 'We are not "website sellers". We work side by side with you and make decisions together. This way, you get a solution that fits your business exactly, not something generic. You can always count on us even after delivery.'
+          },
+          {
+            question: 'Does our collaboration end when the website or app is ready?',
+            answer: 'No. Formally yes, but in practice we stay with you. We offer support, maintenance, additional development and improvements. The real value is not just in delivery, but in a partnership that lasts.'
+          },
+          {
+            question: 'What if I\'m not satisfied or want to quit?',
+            answer: 'In the early stage, if work hasn\'t progressed much, it\'s possible to stop the project. If time has already been invested, we negotiate fairly and transparently. Building trust is more important to us than finishing the job "at any cost".'
+          },
+          {
+            question: 'What does the collaboration process look like?',
+            answer: 'The process is clear and transparent: We talk and define needs. We make a plan and rough price. We create prototype/design and include you in feedback. We develop and test. We launch the project online. If desired, we stay with you through support and further development.'
+          },
+          {
+            question: 'Why can\'t it be "fast and cheap"?',
+            answer: 'We understand that everyone likes to get the best deal and have the job done immediately. However, quality software requires planning, development and testing. If you want a solution that will actually work, bring clients and last for years, both time and knowledge are invested. In the end, it always pays off more than the "fastest and cheapest" solution.'
+          }
+        ]
       },
       contact: {
         title: 'Contact Us',
@@ -247,6 +324,9 @@ export default function ReaSoftWebsite() {
               <button onClick={() => scrollToSection('process')} className="text-slate-300 hover:text-brand-primary transition-colors">
                 {t.nav.process}
               </button>
+              <button onClick={() => scrollToSection('faq')} className="text-slate-300 hover:text-brand-primary transition-colors">
+                {t.nav.faq}
+              </button>
               <button onClick={() => scrollToSection('contact')} className="text-slate-300 hover:text-brand-primary transition-colors">
                 {t.nav.contact}
               </button>
@@ -298,6 +378,12 @@ export default function ReaSoftWebsite() {
                 className="block w-full text-left py-2 text-slate-300 hover:text-brand-primary transition-colors"
               >
                 {t.nav.process}
+              </button>
+              <button 
+                onClick={() => scrollToSection('faq')} 
+                className="block w-full text-left py-2 text-slate-300 hover:text-brand-primary transition-colors"
+              >
+                {t.nav.faq}
               </button>
               <button 
                 onClick={() => scrollToSection('contact')} 
@@ -385,7 +471,7 @@ export default function ReaSoftWebsite() {
       <section id="services" className="py-20 bg-slate-800 overflow-hidden">
         <div className="container mx-auto px-4">
           <motion.div
-            className="text-center mb-16"
+            className="text-center mb-8 sm:mb-16"
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -643,12 +729,21 @@ export default function ReaSoftWebsite() {
                             {index === 5 && t.services.consulting.title}
                           </h4>
 
-                          {/* Decorative Elements */}
-                          <div className={`absolute top-6 right-6 w-10 h-10 rounded-full ${
-                            index === 1 || index === 3 ? 'bg-slate-800/25' : 'bg-white/15'
-                          }`}></div>
+                          {/* Rocket Icon in top right corner */}
+                          <motion.div 
+                            className={`absolute top-6 right-6 w-10 h-10 rounded-full flex items-center justify-center ${
+                              index === 1 || index === 3 || index === 5 ? 'bg-slate-800/25' : 'bg-white/15'
+                            }`}
+                            whileHover={{ scale: 1.1, rotate: 5 }}
+                            transition={{ duration: 0.2 }}
+                          >
+                            <Rocket className={`w-5 h-5 ${
+                              index === 1 || index === 3 || index === 5 ? 'text-slate-700' : 'text-white'
+                            }`} />
+                          </motion.div>
+                          {/* Decorative Element bottom left */}
                           <div className={`absolute bottom-6 left-6 w-16 h-16 rounded-full ${
-                            index === 1 || index === 3 ? 'bg-slate-800/15' : 'bg-white/10'
+                            index === 1 || index === 3 || index === 5 ? 'bg-slate-800/15' : 'bg-white/10'
                           }`}></div>
                           
                           {/* Active indicator */}
@@ -672,6 +767,7 @@ export default function ReaSoftWebsite() {
           {/* Mobile: Original Grid Layout */}
           <div className="lg:hidden">
             <ServiceCards
+              language={language}
               services={[
                 { 
                   icon: Globe, 
@@ -1121,6 +1217,199 @@ export default function ReaSoftWebsite() {
                 </div>
               );
             })}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section id="faq" className="py-20 bg-slate-800 relative overflow-hidden">
+        {/* Rocket Launch Ramp Background */}
+        <div className="absolute inset-0 pointer-events-none">
+          <svg className="absolute bottom-0 left-0 w-full h-full opacity-5" viewBox="0 0 1200 800" fill="none">
+            <path d="M0 800 L200 600 L400 500 L600 400 L800 300 L1000 200 L1200 100" stroke="currentColor" strokeWidth="3" className="text-brand-primary"/>
+            <path d="M0 780 L200 580 L400 480 L600 380 L800 280 L1000 180 L1200 80" stroke="currentColor" strokeWidth="2" className="text-brand-secondary"/>
+            <path d="M0 760 L200 560 L400 460 L600 360 L800 260 L1000 160 L1200 60" stroke="currentColor" strokeWidth="1" className="text-brand-highlight"/>
+          </svg>
+        </div>
+
+        <div className="container mx-auto px-4 relative z-10">
+          <motion.div
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
+              <span className="bg-gradient-to-r from-brand-accent to-brand-secondary bg-clip-text text-transparent">
+                {t.faq.title}
+              </span>
+            </h2>
+            <p className="text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto px-4">
+              {t.faq.subtitle}
+            </p>
+          </motion.div>
+
+          {/* Desktop FAQ Steps Layout */}
+          <div className="hidden lg:block max-w-6xl mx-auto">
+            <div className="relative">
+              {/* Rocket Path */}
+              <div className="absolute left-0 top-0 w-full h-full pointer-events-none">
+                <motion.div
+                  className="absolute"
+                  initial={{ left: "2%", top: "90%" }}
+                  animate={{ 
+                    left: ["2%", "98%"],
+                    top: ["90%", "10%"]
+                  }}
+                  transition={{
+                    duration: 20,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                >
+                  <motion.div
+                    animate={{ rotate: [45, 60, 30, 45] }}
+                    transition={{
+                      duration: 20,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                  >
+                    <Rocket className="w-8 h-8 text-brand-highlight opacity-60" />
+                  </motion.div>
+                </motion.div>
+              </div>
+
+              {/* FAQ Steps */}
+              <div className="space-y-8">
+                {t.faq.questions.map((faq: any, index: number) => {
+                  const marginClasses = [
+                    'ml-0', 'ml-12', 'ml-24', 'ml-36', 'ml-48', 'ml-60', 'ml-72', 'ml-96'
+                  ];
+                  
+                  return (
+                    <motion.div
+                      key={index}
+                      className={`${marginClasses[index] || 'ml-96'} max-w-2xl`}
+                      initial={{ opacity: 0, x: -50 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.6, delay: index * 0.1 }}
+                      viewport={{ once: true }}
+                    >
+                    <div 
+                      className={`bg-slate-900/50 backdrop-blur-sm border border-slate-600 rounded-2xl overflow-hidden transition-all duration-300 hover:border-brand-primary/50 cursor-pointer ${
+                        openFaqIndex === index ? 'border-brand-primary' : ''
+                      }`}
+                      onClick={() => setOpenFaqIndex(openFaqIndex === index ? null : index)}
+                    >
+                      <div className="p-6 flex items-center justify-between">
+                        <div className="flex items-center space-x-4">
+                          <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+                            index % 4 === 0 ? 'bg-brand-primary/20 text-brand-primary' :
+                            index % 4 === 1 ? 'bg-brand-secondary/20 text-brand-secondary' :
+                            index % 4 === 2 ? 'bg-brand-highlight/20 text-brand-highlight' :
+                            'bg-brand-accent/20 text-brand-accent'
+                          }`}>
+                            <span className="font-bold text-lg">{index + 1}</span>
+                          </div>
+                          <h3 className="text-lg font-semibold text-white">
+                            {faq.question}
+                          </h3>
+                        </div>
+                        <motion.div
+                          animate={{ rotate: openFaqIndex === index ? 180 : 0 }}
+                          transition={{ duration: 0.3 }}
+                          className="text-brand-primary"
+                        >
+                          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </motion.div>
+                      </div>
+                      <motion.div
+                        initial={false}
+                        animate={{
+                          height: openFaqIndex === index ? "auto" : 0,
+                          opacity: openFaqIndex === index ? 1 : 0
+                        }}
+                        transition={{ duration: 0.3 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="px-6 pb-6">
+                          <p className="text-slate-300 leading-relaxed pl-16">
+                            {faq.answer}
+                          </p>
+                        </div>
+                      </motion.div>
+                    </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          {/* Mobile FAQ Simple Layout */}
+          <div className="lg:hidden max-w-3xl mx-auto">
+            <div className="space-y-4">
+              {t.faq.questions.map((faq: any, index: number) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                >
+                  <div 
+                    className={`bg-slate-900/50 backdrop-blur-sm border border-slate-600 rounded-xl overflow-hidden transition-all duration-300 ${
+                      openFaqIndex === index ? 'border-brand-primary' : ''
+                    }`}
+                    onClick={() => setOpenFaqIndex(openFaqIndex === index ? null : index)}
+                  >
+                    <div className="p-4 flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                          index % 4 === 0 ? 'bg-brand-primary/20 text-brand-primary' :
+                          index % 4 === 1 ? 'bg-brand-secondary/20 text-brand-secondary' :
+                          index % 4 === 2 ? 'bg-brand-highlight/20 text-brand-highlight' :
+                          'bg-brand-accent/20 text-brand-accent'
+                        }`}>
+                          <span className="font-bold text-sm">{index + 1}</span>
+                        </div>
+                        <h3 className="text-sm font-semibold text-white flex-1 pr-2">
+                          {faq.question}
+                        </h3>
+                      </div>
+                      <motion.div
+                        animate={{ rotate: openFaqIndex === index ? 180 : 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="text-brand-primary flex-shrink-0"
+                      >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </motion.div>
+                    </div>
+                    <motion.div
+                      initial={false}
+                      animate={{
+                        height: openFaqIndex === index ? "auto" : 0,
+                        opacity: openFaqIndex === index ? 1 : 0
+                      }}
+                      transition={{ duration: 0.3 }}
+                      className="overflow-hidden"
+                    >
+                      <div className="px-4 pb-4">
+                        <p className="text-slate-300 text-sm leading-relaxed pl-11">
+                          {faq.answer}
+                        </p>
+                      </div>
+                    </motion.div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
