@@ -821,25 +821,31 @@ export default function ReaSoftWebsite() {
       <section id="process" className="py-20 bg-gradient-to-br from-slate-900 to-slate-800 relative overflow-hidden">
         {/* Animated Stars Background */}
         <div className="absolute inset-0 pointer-events-none">
-          {[...Array(15)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-1 h-1 bg-white rounded-full opacity-60"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-              }}
-              animate={{
-                opacity: [0.2, 1, 0.2],
-                scale: [0.5, 1.5, 0.5]
-              }}
-              transition={{
-                duration: 2 + Math.random() * 3,
-                repeat: Infinity,
-                delay: Math.random() * 2
-              }}
-            />
-          ))}
+          {[16.04, 58.03, 19.97, 21.23, 11.26, 20.73, 75.02, 28.47, 49.63, 59.99, 21.12, 66.59, 44.72, 58.27, 94.73].map((leftPos, i) => {
+            const topPositions = [41.48, 2.82, 19.41, 47.22, 63.25, 91.54, 68.59, 44.68, 7.07, 61.85, 70.12, 35.46, 66.15, 78.89, 65.28];
+            const durations = [2.5, 3.2, 4.1, 2.8, 3.7, 2.3, 4.5, 3.0, 2.9, 3.8, 2.6, 4.2, 3.3, 2.7, 3.9];
+            const delays = [0.2, 1.1, 0.7, 1.5, 0.3, 1.8, 0.9, 1.2, 0.5, 1.7, 0.8, 1.3, 0.4, 1.6, 1.0];
+            
+            return (
+              <motion.div
+                key={i}
+                className="absolute w-1 h-1 bg-white rounded-full opacity-60"
+                style={{
+                  left: `${leftPos}%`,
+                  top: `${topPositions[i]}%`,
+                }}
+                animate={{
+                  opacity: [0.2, 1, 0.2],
+                  scale: [0.5, 1.5, 0.5]
+                }}
+                transition={{
+                  duration: durations[i],
+                  repeat: Infinity,
+                  delay: delays[i]
+                }}
+              />
+            );
+          })}
         </div>
         
         <div className="container mx-auto px-4 relative z-10">
