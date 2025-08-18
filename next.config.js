@@ -1,32 +1,26 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Optimize bundle size and performance
-  swcMinify: true,
-  
   // Enable experimental features for better performance
   experimental: {
     optimizePackageImports: ['framer-motion', 'lucide-react'],
   },
   
-  // Compress responses
   compress: true,
-  
-  // Optimize images
+  // Optimize images for Netlify
   images: {
     formats: ['image/webp', 'image/avif'],
-    minimumCacheTTL: 31536000, // 1 year
+    unoptimized: false, // Netlify supports Next.js Image optimization
   },
   
-  // Bundle analyzer setup (can enable when needed)
-  // webpack: (config, { isServer }) => {
-  //   if (!isServer) {
-  //     config.resolve.fallback = {
-  //       ...config.resolve.fallback,
-  //       fs: false,
-  //     }
-  //   }
-  //   return config
-  // },
+  // Output configuration for Netlify
+  output: 'standalone',
+  trailingSlash: false,
+  
+  // Optimize for static deployment
+  generateEtags: false,
+  
+  // Compression is handled by Netlify
+  compress: false,
 };
 
 module.exports = nextConfig;

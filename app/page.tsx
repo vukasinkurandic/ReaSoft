@@ -767,15 +767,24 @@ export default function ReaSoftWebsite() {
             
             {/* Link to detailed About Us page */}
             <motion.div
+              className="mt-8"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
               <a
                 href="/about-us"
-                className="inline-flex items-center px-8 py-3 bg-gradient-to-r from-brand-secondary to-brand-accent rounded-full text-white font-semibold hover:from-brand-secondary-dark hover:to-brand-accent-dark transition-all duration-300 shadow-lg hover:shadow-xl"
+                className="inline-flex items-center px-8 py-3 bg-slate-800 border border-slate-600 rounded-lg text-white font-semibold hover:bg-slate-700 hover:border-brand-primary transition-all duration-300"
               >
-                {language === 'sr' ? 'Saznajte više o nama' : 'Learn more about us'}
-                <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <span>
+                  {language === 'sr' ? 'Saznajte više o nama' : 'Learn more about us'}
+                </span>
+                
+                <svg 
+                  className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24"
+                >
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
               </a>

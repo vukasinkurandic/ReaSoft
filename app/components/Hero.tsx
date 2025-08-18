@@ -64,14 +64,14 @@ export default function Hero({ t, scrollToSection }: HeroProps) {
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
             <button
               onClick={() => scrollToSection('kontakt')}
-              className="group px-8 py-4 bg-gradient-to-r from-brand-primary to-brand-highlight text-white font-semibold rounded-xl hover:scale-105 transition-all duration-300 flex items-center space-x-2 shadow-lg hover:shadow-2xl"
+              className="group w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-brand-primary to-brand-highlight text-white font-semibold rounded-xl hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-2 shadow-lg hover:shadow-2xl"
             >
               <span className="text-lg">{t.hero.cta}</span>
               <Rocket className="w-5 h-5 group-hover:rotate-12 transition-transform" />
             </button>
             <a
               href="/about-us"
-              className="group px-8 py-4 border-2 border-brand-accent text-brand-accent font-semibold rounded-xl hover:bg-brand-accent hover:text-slate-700 transition-all duration-300 flex items-center space-x-2"
+              className="group w-full sm:w-auto px-8 py-4 border-2 border-brand-accent text-brand-accent font-semibold rounded-xl hover:bg-brand-accent hover:text-slate-700 transition-all duration-300 flex items-center justify-center space-x-2"
             >
               <span className="text-lg">{t.hero.cta2}</span>
               <Code className="w-5 h-5 group-hover:scale-110 transition-transform" />

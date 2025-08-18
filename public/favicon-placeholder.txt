@@ -1,2 +1,0 @@
-<!-- This is a placeholder for favicon.ico - would need actual icon generation tool -->
-<!-- For now, the SVG favicon will work in modern browsers -->
