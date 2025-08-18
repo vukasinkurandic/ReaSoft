@@ -1,0 +1,25 @@
+<svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="180" height="180" rx="40" fill="url(#gradient)"/>
+  <g transform="translate(90, 90)">
+    <!-- Rocket Body -->
+    <path d="M0 -40 L-10 -20 L-10 10 L-5 20 L5 20 L10 10 L10 -20 Z" fill="white"/>
+    <!-- Rocket Tip -->
+    <path d="M0 -40 L-8 -30 L8 -30 Z" fill="#FBF3D5"/>
+    <!-- Side Fins -->
+    <path d="M-10 -10 L-20 0 L-10 10 Z" fill="#D6DAC8"/>
+    <path d="M10 -10 L20 0 L10 10 Z" fill="#D6DAC8"/>
+    <!-- Windows -->
+    <circle cx="0" cy="-10" r="5" fill="#9CAFAA"/>
+    <circle cx="0" cy="5" r="3" fill="#9CAFAA" opacity="0.7"/>
+    <!-- Flame -->
+    <path d="M-5 20 L0 35 L5 20 Z" fill="#FF6B35"/>
+    <path d="M-3 20 L0 30 L3 20 Z" fill="#FFB800"/>
+  </g>
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#D6A99D;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#FBF3D5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#9CAFAA;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+</svg>

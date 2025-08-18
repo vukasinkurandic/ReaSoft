@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { motion, PanInfo } from 'framer-motion';
+import { Rocket } from 'lucide-react';
 
 interface Service {
   icon: any;
@@ -13,9 +14,10 @@ interface Service {
 
 interface ServiceCardsProps {
   services: Service[];
+  language: 'sr' | 'en';
 }
 
-export default function ServiceCards({ services }: ServiceCardsProps) {
+export default function ServiceCards({ services, language }: ServiceCardsProps) {
   const [currentIndex, setCurrentIndex] = useState(1); // Start at middle card
   
   const handleDragEnd = (_event: any, info: PanInfo) => {
@@ -160,10 +162,6 @@ export default function ServiceCards({ services }: ServiceCardsProps) {
                     <div className={`absolute top-0 left-0 w-full h-full bg-gradient-to-br ${colors.overlay}`}></div>
                     <div className="absolute top-8 right-8 w-24 h-24 rounded-full bg-black/5 blur-xl"></div>
                     <div className="absolute bottom-8 left-8 w-32 h-32 rounded-full bg-black/5 blur-2xl"></div>
-                    
-                    {/* Geometric patterns with proper contrast */}
-                    <div className={`absolute top-12 left-12 w-1 h-16 bg-current opacity-20 rotate-45 ${colors.text}`}></div>
-                    <div className={`absolute bottom-16 right-16 w-1 h-12 bg-current opacity-20 rotate-12 ${colors.text}`}></div>
                   </div>
 
                   {/* Card content with proper contrast */}
@@ -190,19 +188,18 @@ export default function ServiceCards({ services }: ServiceCardsProps) {
                     {/* Bottom section with better contrast */}
                     <div className="flex items-center justify-between mt-4 sm:mt-8">
                       <div className="flex items-center space-x-2">
-                        <div className={`w-2 h-2 rounded-full ${colors.textTertiary.replace('text-', 'bg-')}`}></div>
                         <div className={`text-xs font-semibold tracking-wider uppercase ${colors.textTertiary} hidden sm:block`}>
                           {String(index + 1).padStart(2, '0')} / {String(services.length).padStart(2, '0')}
                         </div>
                       </div>
                       
-                      {/* Action indicator */}
+                      {/* Action indicator with rocket icon */}
                       <motion.div
-                        className="w-8 sm:w-10 h-8 sm:h-10 bg-black/10 backdrop-blur-sm rounded-full flex items-center justify-center border border-black/20"
-                        whileHover={{ scale: 1.1, backgroundColor: 'rgba(0,0,0,0.2)' }}
+                        className="w-8 sm:w-10 h-8 sm:h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/30 shadow-lg"
+                        whileHover={{ scale: 1.1, rotate: 5 }}
                         transition={{ duration: 0.2 }}
                       >
-                        <div className={`w-1.5 h-1.5 rounded-full ${colors.textTertiary.replace('text-', 'bg-')}`}></div>
+                        <Rocket className={`w-4 sm:w-5 h-4 sm:h-5 ${colors.icon}`} />
                       </motion.div>
                     </div>
                   </div>
@@ -244,7 +241,10 @@ export default function ServiceCards({ services }: ServiceCardsProps) {
       {/* Instructions */}
       <div className="text-center mt-6">
         <p className="text-slate-400 text-sm">
-          Drag cards or click to explore our services
+          {language === 'sr' 
+            ? 'Prevucite kartice ili kliknite da istražite naše usluge'
+            : 'Drag cards or click to explore our services'
+          }
         </p>
       </div>
     </div>
