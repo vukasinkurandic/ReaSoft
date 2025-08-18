@@ -69,6 +69,12 @@ export default function RootLayout({ children }: Props) {
         <meta name="theme-color" content="#D6A99D" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         
+        {/* Preload critical resources for Core Web Vitals */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="//fonts.gstatic.com" />
+        
         {/* Hreflang links for multilingual SEO */}
         <link rel="alternate" hrefLang="sr" href="https://reasoft.rs" />
         <link rel="alternate" hrefLang="en" href="https://reasoft.rs?lang=en" />
@@ -89,7 +95,7 @@ export default function RootLayout({ children }: Props) {
               logo: 'https://reasoft.rs/favicon.svg',
               contactPoint: {
                 '@type': 'ContactPoint',
-                telephone: '+381-XX-XXX-XXXX',
+                telephone: '+381659210912',
                 contactType: 'customer service',
                 areaServed: 'RS',
                 availableLanguage: ['Serbian', 'English']
@@ -140,7 +146,7 @@ export default function RootLayout({ children }: Props) {
                 }
               ],
               priceRange: '$$',
-              telephone: '+381-XX-XXX-XXXX',
+              telephone: '+381659210912',
               email: 'info@reasoft.rs',
               foundingDate: '2024',
               numberOfEmployees: '1-10',

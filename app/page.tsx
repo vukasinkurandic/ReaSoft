@@ -1,17 +1,20 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, LazyMotion, domAnimation } from 'framer-motion';
 import { Globe, Monitor, Smartphone, Palette, Settings, Headphones, Rocket } from 'lucide-react';
 import ServiceCards from './components/ServiceCards';
 import Header from './components/Header';
 import Hero from './components/Hero';
-import Process from './components/Process';
-import Benefits from './components/Benefits';
-import FAQ from './components/FAQ';
-import Contact from './components/Contact';
-import Footer from './components/Footer';
-import BackToTop from './components/BackToTop';
+import { lazy, Suspense } from 'react';
+
+// Lazy load components for better performance
+const Process = lazy(() => import('./components/Process'));
+const Benefits = lazy(() => import('./components/Benefits'));
+const FAQ = lazy(() => import('./components/FAQ'));
+const Contact = lazy(() => import('./components/Contact'));
+const Footer = lazy(() => import('./components/Footer'));
+const BackToTop = lazy(() => import('./components/BackToTop'));
 
 export default function ReaSoftWebsite() {
   const [language, setLanguage] = useState<'sr' | 'en'>('sr');
@@ -396,7 +399,8 @@ export default function ReaSoftWebsite() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 text-white overflow-x-hidden">
+    <LazyMotion features={domAnimation}>
+      <div className="min-h-screen bg-slate-900 text-white overflow-x-hidden">
       <Header 
         language={language} 
         setLanguage={setLanguage} 
@@ -835,17 +839,40 @@ export default function ReaSoftWebsite() {
         </div>
       </section>
 
-      <Process t={t} language={language} />
+      <Suspense fallback={<div className="py-20 bg-slate-900 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-primary"></div>
+      </div>}>
+        <Process t={t} language={language} />
+      </Suspense>
 
-      <Benefits t={t} />
+      <Suspense fallback={<div className="py-20 bg-slate-800 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-secondary"></div>
+      </div>}>
+        <Benefits t={t} />
+      </Suspense>
 
-      <FAQ t={t} language={language} />
+      <Suspense fallback={<div className="py-20 bg-slate-900 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-highlight"></div>
+      </div>}>
+        <FAQ t={t} language={language} />
+      </Suspense>
 
-      <Contact t={t} language={language} />
+      <Suspense fallback={<div className="py-20 bg-slate-800 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-accent"></div>
+      </div>}>
+        <Contact t={t} language={language} />
+      </Suspense>
 
-      <Footer language={language} />
+      <Suspense fallback={<div className="py-4 bg-slate-900 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-brand-primary"></div>
+      </div>}>
+        <Footer language={language} />
+      </Suspense>
 
-      <BackToTop />
-    </div>
+      <Suspense fallback={null}>
+        <BackToTop />
+      </Suspense>
+      </div>
+    </LazyMotion>
   );
 }
