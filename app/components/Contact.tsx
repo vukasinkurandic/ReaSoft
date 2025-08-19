@@ -82,8 +82,12 @@ export default function Contact({ t, language }: ContactProps) {
         recaptchaToken = await window.grecaptcha.execute(process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY, {
           action: 'contact_form'
         });
+        console.log('reCAPTCHA token generated:', recaptchaToken.substring(0, 20) + '...');
+      } else {
+        console.log('reCAPTCHA not available');
       }
       
+      // Create form data for Netlify
       const formDataToSend = new FormData();
       formDataToSend.append('form-name', 'contact');
       formDataToSend.append('name', formData.name);
@@ -93,17 +97,23 @@ export default function Contact({ t, language }: ContactProps) {
         formDataToSend.append('g-recaptcha-response', recaptchaToken);
       }
       
+      console.log('Submitting form to Netlify...');
       const response = await fetch('/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams(formDataToSend as any).toString()
       });
       
+      console.log('Response status:', response.status);
+      console.log('Response headers:', response.headers);
+      
       if (response.ok) {
+        console.log('Form submitted successfully');
         setSubmitStatus('success');
         setFormData({ name: '', email: '', message: '', 'bot-field': '' });
       } else {
-        console.error('Form submission failed:', response.status, response.statusText);
+        const responseText = await response.text();
+        console.error('Form submission failed:', response.status, response.statusText, responseText);
         setSubmitStatus('error');
       }
     } catch (error) {
@@ -135,7 +145,7 @@ export default function Contact({ t, language }: ContactProps) {
             name="contact"
             method="POST" 
             data-netlify="true"
-            data-netlify-recaptcha="true"
+            data-netlify-recaptcha="false"
             onSubmit={handleFormSubmit} 
             className="space-y-6"
           >
