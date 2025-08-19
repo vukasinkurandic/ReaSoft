@@ -83,7 +83,7 @@ export default function AboutUsClient() {
         description: 'Spremni smo da razgovaramo o vašem sledećem projektu',
         phone: '+381659210912',
         email: 'info@reasoft.rs',
-        location: 'Srbija (radimo remote sa celom zemljom)'
+        location: 'Niš, Serbia'
       },
       backToHome: 'Nazad na početnu'
     },
@@ -154,7 +154,7 @@ export default function AboutUsClient() {
         description: 'We\'re ready to discuss your next project',
         phone: '+381659210912',
         email: 'info@reasoft.rs',
-        location: 'Serbia (we work remotely throughout the country)'
+        location: 'Niš, Serbia'
       },
       backToHome: 'Back to Home'
     }
@@ -413,12 +413,35 @@ export default function AboutUsClient() {
                 </div>
               </div>
               
-              <button 
+              <motion.button 
                 onClick={handleContactClick}
-                className="inline-block px-8 py-3 bg-gradient-to-r from-brand-primary to-brand-secondary rounded-full text-white font-semibold hover:from-brand-primary-dark hover:to-brand-secondary-dark transition-all duration-300 transform hover:scale-105"
+                className="inline-flex items-center space-x-3 px-8 py-3 bg-slate-700 border border-slate-600 rounded-full text-white font-semibold shadow-lg hover:bg-slate-600 hover:border-brand-primary hover:shadow-xl transition-all duration-300 transform hover:scale-105 group relative overflow-hidden"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
-                {language === 'sr' ? 'Kontaktirajte nas' : 'Contact Us'}
-              </button>
+                {/* Background glow effect */}
+                <div className="absolute inset-0 bg-brand-primary/10 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                
+                {/* Button content */}
+                <div className="relative z-10 flex items-center space-x-3">
+                  <Mail className="w-5 h-5" />
+                  <span>{language === 'sr' ? 'Kontaktirajte nas' : 'Contact Us'}</span>
+                  <motion.div
+                    className="w-5 h-5"
+                    animate={{ x: [0, 3, 0] }}
+                    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                  >
+                    <svg 
+                      className="w-5 h-5" 
+                      fill="none" 
+                      stroke="currentColor" 
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </motion.div>
+                </div>
+              </motion.button>
             </motion.div>
           </div>
         </div>
