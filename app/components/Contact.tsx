@@ -38,31 +38,7 @@ export default function Contact({ t, language }: ContactProps) {
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [recaptchaLoaded, setRecaptchaLoaded] = useState(false);
 
-  // Load reCAPTCHA script
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://www.google.com/recaptcha/api.js?render=' + process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
-    script.onload = () => {
-      setRecaptchaLoaded(true);
-      // Hide reCAPTCHA badge
-      const style = document.createElement('style');
-      style.innerHTML = `
-        .grecaptcha-badge { 
-          visibility: hidden !important;
-        }
-        .rc-anchor-logo-img,
-        .rc-anchor-logo-img-large {
-          display: none !important;
-        }
-      `;
-      document.head.appendChild(style);
-    };
-    document.head.appendChild(script);
-    
-    return () => {
-      document.head.removeChild(script);
-    };
-  }, []);
+  // Netlify handles reCAPTCHA automatically with data-netlify-recaptcha="true"
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -135,7 +111,7 @@ export default function Contact({ t, language }: ContactProps) {
             name="contact"
             method="POST" 
             data-netlify="true"
-            data-netlify-recaptcha="false"
+            data-netlify-recaptcha="true"
             onSubmit={handleFormSubmit} 
             className="space-y-6"
           >
