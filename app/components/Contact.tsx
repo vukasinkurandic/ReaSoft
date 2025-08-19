@@ -77,15 +77,8 @@ export default function Contact({ t, language }: ContactProps) {
     try {
       let recaptchaToken = '';
       
-      // Get reCAPTCHA token if available
-      if (recaptchaLoaded && window.grecaptcha && process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY) {
-        recaptchaToken = await window.grecaptcha.execute(process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY, {
-          action: 'contact_form'
-        });
-        console.log('reCAPTCHA token generated:', recaptchaToken.substring(0, 20) + '...');
-      } else {
-        console.log('reCAPTCHA not available');
-      }
+      // Temporarily disable reCAPTCHA for testing
+      console.log('Testing without reCAPTCHA');
       
       // Create form data for Netlify
       const formDataToSend = new FormData();
@@ -93,9 +86,6 @@ export default function Contact({ t, language }: ContactProps) {
       formDataToSend.append('name', formData.name);
       formDataToSend.append('email', formData.email);
       formDataToSend.append('message', formData.message);
-      if (recaptchaToken) {
-        formDataToSend.append('g-recaptcha-response', recaptchaToken);
-      }
       
       console.log('Submitting form to Netlify...');
       const response = await fetch('/', {
