@@ -22,6 +22,30 @@ export default function BackToTop() {
       top: 0,
       behavior: 'smooth'
     });
+    
+    // Override browser's smooth scroll with CSS
+    document.documentElement.style.scrollBehavior = 'auto';
+    const start = window.pageYOffset;
+    const duration = 2000; // 2 seconds
+    const startTime = performance.now();
+
+    const animateScroll = (currentTime: number) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      
+      // Ease out quad for slower, smoother scroll
+      const easeOutQuad = 1 - Math.pow(1 - progress, 2);
+      
+      window.scrollTo(0, start * (1 - easeOutQuad));
+      
+      if (progress < 1) {
+        requestAnimationFrame(animateScroll);
+      } else {
+        document.documentElement.style.scrollBehavior = 'smooth'; // Restore
+      }
+    };
+
+    requestAnimationFrame(animateScroll);
   };
 
   if (!showBackToTop) return null;
