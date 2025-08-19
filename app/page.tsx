@@ -20,6 +20,8 @@ export default function ReaSoftWebsite() {
   const [language, setLanguage] = useState<'sr' | 'en'>('sr');
   const [activeServiceCard, setActiveServiceCard] = useState(0);
   const [isUserInteracting, setIsUserInteracting] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [isHovering, setIsHovering] = useState(false);
 
   // Section ID mapping for localized URLs
   const sectionIds = {
@@ -376,14 +378,14 @@ export default function ReaSoftWebsite() {
 
   // Auto-rotate service cards
   useEffect(() => {
-    if (isUserInteracting) return;
+    if (isUserInteracting || isHovering) return;
     
     const interval = setInterval(() => {
       setActiveServiceCard((prev) => (prev + 1) % 6);
-    }, 5000);
+    }, 4000);
 
     return () => clearInterval(interval);
-  }, [isUserInteracting]);
+  }, [isUserInteracting, isHovering]);
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -470,7 +472,7 @@ export default function ReaSoftWebsite() {
                         onClick={() => {
                           setActiveServiceCard(index);
                           setIsUserInteracting(true);
-                          setTimeout(() => setIsUserInteracting(false), 8000);
+                          setTimeout(() => setIsUserInteracting(false), 5000);
                         }}
                         className={`w-3 h-3 rounded-full transition-all duration-300 ${
                           index === activeServiceCard 
@@ -600,6 +602,7 @@ export default function ReaSoftWebsite() {
                         dragConstraints={{ left: -150, right: 150 }}
                         onDragStart={() => {
                           setIsUserInteracting(true);
+                          setIsDragging(true);
                         }}
                         onDragEnd={(_, info) => {
                           if (info.offset.x > 40) {
@@ -607,13 +610,21 @@ export default function ReaSoftWebsite() {
                           } else if (info.offset.x < -40) {
                             setActiveServiceCard((prev) => (prev + 1) % 6);
                           }
-                          setTimeout(() => setIsUserInteracting(false), 8000);
+                          setTimeout(() => {
+                            setIsUserInteracting(false);
+                            setIsDragging(false);
+                          }, 5000);
                         }}
                         onClick={() => {
-                          setActiveServiceCard(index);
-                          setIsUserInteracting(true);
-                          setTimeout(() => setIsUserInteracting(false), 8000);
+                          // Only advance if not dragging
+                          if (!isDragging) {
+                            setActiveServiceCard((prev) => (prev + 1) % 6);
+                            setIsUserInteracting(true);
+                            setTimeout(() => setIsUserInteracting(false), 5000);
+                          }
                         }}
+                        onMouseEnter={() => setIsHovering(true)}
+                        onMouseLeave={() => setIsHovering(false)}
                         whileHover={{ 
                           scale: isActive ? 1.02 : position.scale * 1.05,
                           rotateZ: isActive ? 0 : position.rotateZ * 0.8,
@@ -683,6 +694,19 @@ export default function ReaSoftWebsite() {
                   })}
                 </div>
               </div>
+            </div>
+          </div>
+
+          {/* Desktop: Instructions only */}
+          <div className="hidden lg:flex flex-col items-center mt-12">
+            {/* Instructions */}
+            <div className="text-center">
+              <p className="text-slate-400 text-sm">
+                {language === 'sr' 
+                  ? 'Prevucite kartice ili kliknite da istražite naše usluge'
+                  : 'Drag cards or click to explore our services'
+                }
+              </p>
             </div>
           </div>
 
