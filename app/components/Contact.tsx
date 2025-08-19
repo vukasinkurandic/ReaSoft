@@ -3,11 +3,6 @@
 import { useState, useEffect } from 'react';
 import { Send, Mail } from 'lucide-react';
 
-declare global {
-  interface Window {
-    grecaptcha: any;
-  }
-}
 
 interface ContactProps {
   t: {
@@ -36,34 +31,80 @@ export default function Contact({ t, language }: ContactProps) {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
-  const [recaptchaLoaded, setRecaptchaLoaded] = useState(false);
+  const [errors, setErrors] = useState<{name?: string, email?: string, message?: string}>({});
 
-  // Netlify handles reCAPTCHA automatically with data-netlify-recaptcha="true"
+
+  // Validation function
+  const validateForm = () => {
+    console.log('Validating form data:', formData);
+    const newErrors: {name?: string, email?: string, message?: string} = {};
+    
+    if (!formData.name.trim()) {
+      newErrors.name = language === 'sr' ? 'Ime je obavezno' : 'Name is required';
+      console.log('Validation error: Name is required');
+    } else if (formData.name.trim().length < 2) {
+      newErrors.name = language === 'sr' ? 'Ime mora imati minimum 2 karaktera' : 'Name must be at least 2 characters';
+      console.log('Validation error: Name too short');
+    }
+    
+    if (!formData.email.trim()) {
+      newErrors.email = language === 'sr' ? 'Email je obavezan' : 'Email is required';
+      console.log('Validation error: Email is required');
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = language === 'sr' ? 'Email format nije valjan' : 'Email format is invalid';
+      console.log('Validation error: Invalid email format');
+    }
+    
+    if (!formData.message.trim()) {
+      newErrors.message = language === 'sr' ? 'Poruka je obavezna' : 'Message is required';
+      console.log('Validation error: Message is required');
+    } else if (formData.message.trim().length < 10) {
+      newErrors.message = language === 'sr' ? 'Poruka mora imati minimum 10 karaktera' : 'Message must be at least 10 characters';
+      console.log('Validation error: Message too short');
+    }
+    
+    setErrors(newErrors);
+    const isValid = Object.keys(newErrors).length === 0;
+    console.log('Form validation result:', isValid ? 'valid' : 'invalid', newErrors);
+    return isValid;
+  };
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('Form submission started');
     
     // Check honeypot
     if (formData['bot-field']) {
+      console.log('Bot detected via honeypot, ignoring submission');
       return; // Bot detected, silently ignore
     }
     
+    // Validate form
+    if (!validateForm()) {
+      console.log('Form validation failed, stopping submission');
+      return;
+    }
+    
     setIsSubmitting(true);
+    setErrors({});
     
     try {
-      let recaptchaToken = '';
-      
-      // Temporarily disable reCAPTCHA for testing
-      console.log('Testing without reCAPTCHA');
+      console.log('Submitting form without reCAPTCHA');
       
       // Create form data for Netlify
       const formDataToSend = new FormData();
-      formDataToSend.append('form-name', 'contact');
-      formDataToSend.append('name', formData.name);
-      formDataToSend.append('email', formData.email);
-      formDataToSend.append('message', formData.message);
+      formDataToSend.append('form-name', 'contact-us');
+      formDataToSend.append('name', formData.name.trim());
+      formDataToSend.append('email', formData.email.trim());
+      formDataToSend.append('message', formData.message.trim());
       
-      console.log('Submitting form to Netlify...');
+      console.log('Submitting form to Netlify with data:', {
+        'form-name': 'contact-us',
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        message: formData.message.trim(),
+      });
+      
       const response = await fetch('/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -71,15 +112,19 @@ export default function Contact({ t, language }: ContactProps) {
       });
       
       console.log('Response status:', response.status);
-      console.log('Response headers:', response.headers);
+      console.log('Response ok:', response.ok);
       
       if (response.ok) {
-        console.log('Form submitted successfully');
+        console.log('Form submitted successfully to Netlify');
         setSubmitStatus('success');
         setFormData({ name: '', email: '', message: '', 'bot-field': '' });
       } else {
         const responseText = await response.text();
-        console.error('Form submission failed:', response.status, response.statusText, responseText);
+        console.error('Form submission failed:', {
+          status: response.status,
+          statusText: response.statusText,
+          responseText: responseText
+        });
         setSubmitStatus('error');
       }
     } catch (error) {
@@ -87,6 +132,7 @@ export default function Contact({ t, language }: ContactProps) {
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
+      console.log('Form submission process completed');
     }
   };
 
@@ -108,10 +154,10 @@ export default function Contact({ t, language }: ContactProps) {
 
         <div className="max-w-2xl mx-auto px-4">
           <form 
-            name="contact"
+            name="contact-us"
             method="POST" 
             data-netlify="true"
-            data-netlify-recaptcha="true"
+            noValidate
             onSubmit={handleFormSubmit} 
             className="space-y-6"
           >
@@ -119,7 +165,7 @@ export default function Contact({ t, language }: ContactProps) {
             <input 
               type="hidden" 
               name="form-name" 
-              value="contact" 
+              value="contact-us" 
             />
             <div style={{ display: 'none' }}>
               <label>
@@ -132,40 +178,69 @@ export default function Contact({ t, language }: ContactProps) {
               </label>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-              <input
-                type="text"
-                name="name"
-                placeholder={t.contact.form.name}
-                value={formData.name}
-                onChange={(e) => setFormData({...formData, name: e.target.value})}
-                required
-                className="w-full px-4 py-3 bg-slate-900/50 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 transition-all duration-300"
-              />
-              <input
-                type="email"
-                name="email"
-                placeholder={t.contact.form.email}
-                value={formData.email}
-                onChange={(e) => setFormData({...formData, email: e.target.value})}
-                required
-                className="w-full px-4 py-3 bg-slate-900/50 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 transition-all duration-300"
-              />
+              <div>
+                <input
+                  type="text"
+                  name="name"
+                  placeholder={t.contact.form.name}
+                  value={formData.name}
+                  onChange={(e) => {
+                    console.log('Name field changed:', e.target.value);
+                    setFormData({...formData, name: e.target.value});
+                    if (errors.name) setErrors({...errors, name: undefined});
+                  }}
+                  className={`w-full px-4 py-3 bg-slate-900/50 border rounded-xl text-white placeholder-slate-400 focus:ring-2 focus:ring-brand-primary/20 transition-all duration-300 ${
+                    errors.name 
+                      ? 'border-red-500 focus:border-red-500' 
+                      : 'border-slate-600 focus:border-brand-primary'
+                  }`}
+                />
+                {errors.name && (
+                  <p className="text-red-400 text-sm mt-1">{errors.name}</p>
+                )}
+              </div>
+              <div>
+                <input
+                  type="email"
+                  name="email"
+                  placeholder={t.contact.form.email}
+                  value={formData.email}
+                  onChange={(e) => {
+                    console.log('Email field changed:', e.target.value);
+                    setFormData({...formData, email: e.target.value});
+                    if (errors.email) setErrors({...errors, email: undefined});
+                  }}
+                  className={`w-full px-4 py-3 bg-slate-900/50 border rounded-xl text-white placeholder-slate-400 focus:ring-2 focus:ring-brand-primary/20 transition-all duration-300 ${
+                    errors.email 
+                      ? 'border-red-500 focus:border-red-500' 
+                      : 'border-slate-600 focus:border-brand-primary'
+                  }`}
+                />
+                {errors.email && (
+                  <p className="text-red-400 text-sm mt-1">{errors.email}</p>
+                )}
+              </div>
             </div>
             <div className="relative">
               <textarea
                 name="message"
                 placeholder={t.contact.form.message}
                 value={formData.message}
-                onChange={(e) => setFormData({...formData, message: e.target.value})}
-                required
+                onChange={(e) => {
+                  console.log('Message field changed, length:', e.target.value.length);
+                  setFormData({...formData, message: e.target.value});
+                  if (errors.message) setErrors({...errors, message: undefined});
+                }}
                 rows={6}
-                className="w-full px-4 py-3 bg-slate-900/50 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 transition-all duration-300"
+                className={`w-full px-4 py-3 bg-slate-900/50 border rounded-xl text-white placeholder-slate-400 focus:ring-2 focus:ring-brand-primary/20 transition-all duration-300 ${
+                  errors.message 
+                    ? 'border-red-500 focus:border-red-500' 
+                    : 'border-slate-600 focus:border-brand-primary'
+                }`}
               />
-              {/* reCAPTCHA badge positioning */}
-              <div className="absolute bottom-2 right-2 text-xs text-slate-400 flex items-center space-x-1">
-                <span>Protected by</span>
-                <span className="text-brand-primary font-medium">reCAPTCHA</span>
-              </div>
+              {errors.message && (
+                <p className="text-red-400 text-sm mt-1">{errors.message}</p>
+              )}
             </div>
             <div className="text-center">
               <button
