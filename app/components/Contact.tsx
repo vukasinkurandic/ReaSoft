@@ -26,62 +26,43 @@ export default function Contact({ t, language }: ContactProps) {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    message: '',
-    'bot-field': ''
+    message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [errors, setErrors] = useState<{name?: string, email?: string, message?: string}>({});
 
 
-  // Validation function
   const validateForm = () => {
-    console.log('Validating form data:', formData);
     const newErrors: {name?: string, email?: string, message?: string} = {};
     
     if (!formData.name.trim()) {
       newErrors.name = language === 'sr' ? 'Ime je obavezno' : 'Name is required';
-      console.log('Validation error: Name is required');
     } else if (formData.name.trim().length < 2) {
       newErrors.name = language === 'sr' ? 'Ime mora imati minimum 2 karaktera' : 'Name must be at least 2 characters';
-      console.log('Validation error: Name too short');
     }
     
     if (!formData.email.trim()) {
       newErrors.email = language === 'sr' ? 'Email je obavezan' : 'Email is required';
-      console.log('Validation error: Email is required');
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = language === 'sr' ? 'Email format nije valjan' : 'Email format is invalid';
-      console.log('Validation error: Invalid email format');
     }
     
     if (!formData.message.trim()) {
       newErrors.message = language === 'sr' ? 'Poruka je obavezna' : 'Message is required';
-      console.log('Validation error: Message is required');
     } else if (formData.message.trim().length < 10) {
       newErrors.message = language === 'sr' ? 'Poruka mora imati minimum 10 karaktera' : 'Message must be at least 10 characters';
-      console.log('Validation error: Message too short');
     }
     
     setErrors(newErrors);
-    const isValid = Object.keys(newErrors).length === 0;
-    console.log('Form validation result:', isValid ? 'valid' : 'invalid', newErrors);
-    return isValid;
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submission started');
     
-    // Check honeypot
-    if (formData['bot-field']) {
-      console.log('Bot detected via honeypot, ignoring submission');
-      return; // Bot detected, silently ignore
-    }
     
-    // Validate form
     if (!validateForm()) {
-      console.log('Form validation failed, stopping submission');
       return;
     }
     
@@ -89,21 +70,11 @@ export default function Contact({ t, language }: ContactProps) {
     setErrors({});
     
     try {
-      console.log('Submitting form without reCAPTCHA');
-      
-      // Create form data for Netlify
       const formDataToSend = new FormData();
       formDataToSend.append('form-name', 'contact-us');
       formDataToSend.append('name', formData.name.trim());
       formDataToSend.append('email', formData.email.trim());
       formDataToSend.append('message', formData.message.trim());
-      
-      console.log('Submitting form to Netlify with data:', {
-        'form-name': 'contact-us',
-        name: formData.name.trim(),
-        email: formData.email.trim(),
-        message: formData.message.trim(),
-      });
       
       const response = await fetch('/', {
         method: 'POST',
@@ -111,28 +82,16 @@ export default function Contact({ t, language }: ContactProps) {
         body: new URLSearchParams(formDataToSend as any).toString()
       });
       
-      console.log('Response status:', response.status);
-      console.log('Response ok:', response.ok);
-      
       if (response.ok) {
-        console.log('Form submitted successfully to Netlify');
         setSubmitStatus('success');
         setFormData({ name: '', email: '', message: '', 'bot-field': '' });
       } else {
-        const responseText = await response.text();
-        console.error('Form submission failed:', {
-          status: response.status,
-          statusText: response.statusText,
-          responseText: responseText
-        });
         setSubmitStatus('error');
       }
     } catch (error) {
-      console.error('Form submission error:', error);
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
-      console.log('Form submission process completed');
     }
   };
 
@@ -161,22 +120,11 @@ export default function Contact({ t, language }: ContactProps) {
             onSubmit={handleFormSubmit} 
             className="space-y-6"
           >
-            {/* Honeypot field - hidden from users but visible to bots */}
             <input 
               type="hidden" 
               name="form-name" 
               value="contact-us" 
             />
-            <div style={{ display: 'none' }}>
-              <label>
-                Don't fill this out if you're human: 
-                <input 
-                  name="bot-field" 
-                  value={formData['bot-field']}
-                  onChange={(e) => setFormData({...formData, 'bot-field': e.target.value})}
-                />
-              </label>
-            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
               <div>
                 <input
@@ -185,7 +133,6 @@ export default function Contact({ t, language }: ContactProps) {
                   placeholder={t.contact.form.name}
                   value={formData.name}
                   onChange={(e) => {
-                    console.log('Name field changed:', e.target.value);
                     setFormData({...formData, name: e.target.value});
                     if (errors.name) setErrors({...errors, name: undefined});
                   }}
@@ -206,7 +153,6 @@ export default function Contact({ t, language }: ContactProps) {
                   placeholder={t.contact.form.email}
                   value={formData.email}
                   onChange={(e) => {
-                    console.log('Email field changed:', e.target.value);
                     setFormData({...formData, email: e.target.value});
                     if (errors.email) setErrors({...errors, email: undefined});
                   }}
@@ -227,7 +173,6 @@ export default function Contact({ t, language }: ContactProps) {
                 placeholder={t.contact.form.message}
                 value={formData.message}
                 onChange={(e) => {
-                  console.log('Message field changed, length:', e.target.value.length);
                   setFormData({...formData, message: e.target.value});
                   if (errors.message) setErrors({...errors, message: undefined});
                 }}
