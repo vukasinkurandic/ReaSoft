@@ -14,9 +14,10 @@ interface HeroProps {
     };
   };
   scrollToSection: (sectionId: string) => void;
+  language: 'sr' | 'en';
 }
 
-export default function Hero({ t, scrollToSection }: HeroProps) {
+export default function Hero({ t, scrollToSection, language }: HeroProps) {
   return (
     <section id="home" className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center relative overflow-hidden pt-24 md:pt-20">
       <div className="container mx-auto px-4 text-center relative z-10">
@@ -63,7 +64,7 @@ export default function Hero({ t, scrollToSection }: HeroProps) {
 
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
             <button
-              onClick={() => scrollToSection('kontakt')}
+              onClick={() => scrollToSection(language === 'sr' ? 'kontakt' : 'contact')}
               className="group w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-brand-primary to-brand-highlight text-white font-semibold rounded-xl hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-2 shadow-lg hover:shadow-2xl"
             >
               <span className="text-lg">{t.hero.cta}</span>

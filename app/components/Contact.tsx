@@ -58,10 +58,12 @@ export default function Contact({ t, language }: ContactProps) {
         </div>
 
         <div className="max-w-2xl mx-auto px-4">
-          <form onSubmit={handleFormSubmit} className="space-y-6">
+          <form onSubmit={handleFormSubmit} className="space-y-6" data-netlify="true" name="contact">
+            <input type="hidden" name="form-name" value="contact" />
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
               <input
                 type="text"
+                name="name"
                 placeholder={t.contact.form.name}
                 value={formData.name}
                 onChange={(e) => setFormData({...formData, name: e.target.value})}
@@ -70,6 +72,7 @@ export default function Contact({ t, language }: ContactProps) {
               />
               <input
                 type="email"
+                name="email"
                 placeholder={t.contact.form.email}
                 value={formData.email}
                 onChange={(e) => setFormData({...formData, email: e.target.value})}
@@ -78,6 +81,7 @@ export default function Contact({ t, language }: ContactProps) {
               />
             </div>
             <textarea
+              name="message"
               placeholder={t.contact.form.message}
               value={formData.message}
               onChange={(e) => setFormData({...formData, message: e.target.value})}

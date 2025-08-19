@@ -408,7 +408,7 @@ export default function ReaSoftWebsite() {
         scrollToSection={scrollToSection}
       />
       
-      <Hero t={t} scrollToSection={scrollToSection} />
+      <Hero t={t} scrollToSection={scrollToSection} language={language} />
 
       {/* Services Section with Stacked Cards */}
       <section id={sectionIds[language].services} className="py-20 bg-slate-800 overflow-hidden">

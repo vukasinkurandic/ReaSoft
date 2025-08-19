@@ -4,9 +4,16 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Code2, Globe, Lightbulb, MapPin, Phone, Mail, ArrowLeft, Users, Target, Award, Heart, Eye, Zap } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function AboutUsClient() {
   const [language, setLanguage] = useState<'sr' | 'en'>('sr');
+  const router = useRouter();
+
+  const handleContactClick = () => {
+    // Navigate to home page first
+    window.location.href = '/#kontakt';
+  };
 
   const content = {
     sr: {
@@ -406,12 +413,12 @@ export default function AboutUsClient() {
                 </div>
               </div>
               
-              <Link 
-                href="/#kontakt"
+              <button 
+                onClick={handleContactClick}
                 className="inline-block px-8 py-3 bg-gradient-to-r from-brand-primary to-brand-secondary rounded-full text-white font-semibold hover:from-brand-primary-dark hover:to-brand-secondary-dark transition-all duration-300 transform hover:scale-105"
               >
                 {language === 'sr' ? 'Kontaktirajte nas' : 'Contact Us'}
-              </Link>
+              </button>
             </motion.div>
           </div>
         </div>

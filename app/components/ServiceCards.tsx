@@ -26,15 +26,11 @@ export default function ServiceCards({ services, language }: ServiceCardsProps) 
     const offset = info.offset.x;
 
     if (offset > threshold || velocity > 300) {
-      // Swipe right - previous card
-      if (currentIndex > 0) {
-        setCurrentIndex(currentIndex - 1);
-      }
+      // Swipe right - previous card (circular)
+      setCurrentIndex(currentIndex > 0 ? currentIndex - 1 : services.length - 1);
     } else if (offset < -threshold || velocity < -300) {
-      // Swipe left - next card  
-      if (currentIndex < services.length - 1) {
-        setCurrentIndex(currentIndex + 1);
-      }
+      // Swipe left - next card (circular)
+      setCurrentIndex(currentIndex < services.length - 1 ? currentIndex + 1 : 0);
     }
   };
 
@@ -156,7 +152,7 @@ export default function ServiceCards({ services, language }: ServiceCardsProps) 
                 whileHover={isActive ? { scale: 1.02 } : { scale: 0.87 }}
                 whileTap={{ scale: isActive ? 0.98 : 0.83 }}
               >
-                <div className={`w-64 sm:w-80 h-80 sm:h-96 rounded-3xl ${service.bgGradient} relative overflow-hidden shadow-2xl`}>
+                <div className={`w-64 sm:w-80 h-[22rem] sm:h-96 rounded-3xl ${service.bgGradient} relative overflow-hidden shadow-2xl`}>
                   {/* Enhanced background overlay for better contrast */}
                   <div className="absolute inset-0">
                     <div className={`absolute top-0 left-0 w-full h-full bg-gradient-to-br ${colors.overlay}`}></div>
@@ -165,8 +161,8 @@ export default function ServiceCards({ services, language }: ServiceCardsProps) 
                   </div>
 
                   {/* Card content with proper contrast */}
-                  <div className="relative z-10 p-6 sm:p-8 h-full flex flex-col justify-between">
-                    <div>
+                  <div className="relative z-10 p-6 sm:p-8 h-full flex flex-col">
+                    <div className="flex-grow">
                       {/* Icon with enhanced contrast */}
                       <motion.div
                         className="w-14 sm:w-16 h-14 sm:h-16 bg-black/15 backdrop-blur-md rounded-2xl flex items-center justify-center mb-4 sm:mb-6 border border-black/20"
@@ -176,7 +172,7 @@ export default function ServiceCards({ services, language }: ServiceCardsProps) 
                         <service.icon className={`w-7 sm:w-8 h-7 sm:h-8 ${colors.icon} drop-shadow-sm`} />
                       </motion.div>
                       
-                      <h3 className={`text-xl sm:text-2xl font-bold mb-2 sm:mb-3 leading-tight ${colors.text} drop-shadow-sm`}>
+                      <h3 className={`text-xl sm:text-2xl font-bold mb-3 sm:mb-4 leading-tight ${colors.text} drop-shadow-sm`}>
                         {service.title}
                       </h3>
                       
@@ -185,24 +181,24 @@ export default function ServiceCards({ services, language }: ServiceCardsProps) 
                       </p>
                     </div>
 
-                    {/* Bottom section with better contrast */}
-                    <div className="flex items-center justify-between mt-4 sm:mt-8">
+                    {/* Bottom section with counter - always at bottom */}
+                    <div className="flex items-center justify-start mt-6 sm:mt-8">
                       <div className="flex items-center space-x-2">
                         <div className={`text-xs font-semibold tracking-wider uppercase ${colors.textTertiary} hidden sm:block`}>
                           {String(index + 1).padStart(2, '0')} / {String(services.length).padStart(2, '0')}
                         </div>
                       </div>
-                      
-                      {/* Action indicator with rocket icon */}
-                      <motion.div
-                        className="w-8 sm:w-10 h-8 sm:h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/30 shadow-lg"
-                        whileHover={{ scale: 1.1, rotate: 5 }}
-                        transition={{ duration: 0.2 }}
-                      >
-                        <Rocket className={`w-4 sm:w-5 h-4 sm:h-5 ${colors.icon}`} />
-                      </motion.div>
                     </div>
                   </div>
+
+                  {/* Rocket icon positioned absolutely in bottom right */}
+                  <motion.div
+                    className="absolute bottom-6 right-6 w-8 sm:w-10 h-8 sm:h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/30 shadow-lg z-20"
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <Rocket className={`w-4 sm:w-5 h-4 sm:h-5 ${colors.icon}`} />
+                  </motion.div>
 
                   {/* Subtle border glow */}
                   <div className="absolute inset-0 rounded-3xl border border-black/10 pointer-events-none"></div>

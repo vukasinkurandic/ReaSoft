@@ -61,7 +61,7 @@ type Props = {
 
 export default function RootLayout({ children }: Props) {
   return (
-    <html lang="sr" className="scroll-smooth">
+    <html lang="sr" className="scroll-smooth" data-scroll-behavior="smooth">
       <head>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.svg" />
@@ -74,6 +74,19 @@ export default function RootLayout({ children }: Props) {
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
         <link rel="dns-prefetch" href="//fonts.gstatic.com" />
+        
+        {/* Google tag (gtag.js) */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-CN2D28V8LE"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-CN2D28V8LE');
+            `
+          }}
+        />
         
         {/* Hreflang links for multilingual SEO */}
         <link rel="alternate" hrefLang="sr" href="https://reasoft.rs" />
