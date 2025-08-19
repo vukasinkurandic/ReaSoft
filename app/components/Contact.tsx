@@ -103,6 +103,7 @@ export default function Contact({ t, language }: ContactProps) {
         setSubmitStatus('success');
         setFormData({ name: '', email: '', message: '', 'bot-field': '' });
       } else {
+        console.error('Form submission failed:', response.status, response.statusText);
         setSubmitStatus('error');
       }
     } catch (error) {
