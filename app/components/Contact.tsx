@@ -116,6 +116,7 @@ export default function Contact({ t, language }: ContactProps) {
             name="contact-us"
             method="POST" 
             data-netlify="true"
+            netlify-honeypot="bot-field"
             noValidate
             onSubmit={handleFormSubmit} 
             className="space-y-6"
