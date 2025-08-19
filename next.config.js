@@ -8,11 +8,11 @@ const nextConfig = {
   // Optimize images for Netlify
   images: {
     formats: ['image/webp', 'image/avif'],
-    unoptimized: false, // Netlify supports Next.js Image optimization
+    unoptimized: true, // Required for static export
   },
   
   // Output configuration for Netlify
-  output: 'standalone',
+  output: 'export',
   trailingSlash: false,
   
   // Optimize for static deployment
