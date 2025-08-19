@@ -84,7 +84,7 @@ export default function Contact({ t, language }: ContactProps) {
       
       if (response.ok) {
         setSubmitStatus('success');
-        setFormData({ name: '', email: '', message: '', 'bot-field': '' });
+        setFormData({ name: '', email: '', message: '' });
       } else {
         setSubmitStatus('error');
       }
