@@ -5,6 +5,8 @@ import { motion } from 'framer-motion';
 import { Code2, Globe, Lightbulb, MapPin, Phone, Mail, ArrowLeft, Users, Target, Award, Heart, Eye, Zap } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import BackToTop from '../components/BackToTop';
 
 export default function AboutUsClient() {
   const [language, setLanguage] = useState<'sr' | 'en'>('sr');
@@ -370,17 +372,30 @@ export default function AboutUsClient() {
               transition={{ duration: 0.8, delay: 1.4 }}
             >
               <div className="bg-gradient-to-r from-slate-800 to-slate-700 rounded-2xl p-8">
-                <div className="flex items-center mb-6">
-                  <MapPin className="w-8 h-8 text-brand-secondary mr-4" />
-                  <h2 className="text-3xl font-bold text-white">{t.coverage.title}</h2>
+                <div className="flex flex-col items-center mb-6">
+                  <MapPin className="w-8 h-8 text-brand-secondary mb-3" />
+                  <h2 className="text-3xl font-bold text-white text-center">
+                    {t.coverage.title}
+                  </h2>
                 </div>
-                <p className="text-lg text-slate-300 mb-6 leading-relaxed" dangerouslySetInnerHTML={{ __html: t.coverage.description }}></p>
-                <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-                  {t.coverage.cities.map((city, index) => (
-                    <div key={index} className="bg-slate-900 rounded-lg px-3 py-2 text-center hover:bg-slate-800 transition-colors">
-                      <span className="text-sm text-slate-300">{city}</span>
-                    </div>
-                  ))}
+                <p className="text-lg text-slate-300 mb-8 leading-relaxed" dangerouslySetInnerHTML={{ __html: t.coverage.description }}></p>
+                
+                {/* Serbia Map */}
+                <div className="relative flex justify-center items-center">
+                  <div className="relative w-full max-w-md mx-auto">
+                    <Image
+                      src="/images/maps/serbia-img.png"
+                      alt="Mapa Srbije - ReaSoft pokriva celu Srbiju"
+                      width={400}
+                      height={500}
+                      className="w-full h-auto drop-shadow-2xl hover:drop-shadow-3xl transition-all duration-300 transform hover:scale-105"
+                      style={{
+                        filter: 'brightness(1.1) contrast(1.2)',
+                        objectFit: 'contain'
+                      }}
+                      priority={false}
+                    />
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -446,6 +461,9 @@ export default function AboutUsClient() {
           </div>
         </div>
       </section>
+      
+      {/* Back to Top Button */}
+      <BackToTop />
     </div>
   );
 }
