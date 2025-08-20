@@ -1,20 +1,29 @@
 {
   "name": "ReaSoft - Custom Software Development & Website Creation",
   "short_name": "ReaSoft",
-  "description": "Process automation, web applications and IT solutions for businesses",
+  "description": "Professional custom software development, website creation and business automation solutions for companies in Serbia",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#1e293b",
-  "theme_color": "#D6A99D",
+  "background_color": "#0f172a",
+  "theme_color": "#334155",
+  "categories": ["business", "productivity", "developer"],
+  "lang": "sr",
   "icons": [
     {
       "src": "/favicon.svg",
       "sizes": "any",
-      "type": "image/svg+xml"
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
     },
     {
       "src": "/apple-touch-icon.svg", 
       "sizes": "180x180",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon-32x32.svg",
+      "sizes": "32x32",
       "type": "image/svg+xml"
     }
   ]

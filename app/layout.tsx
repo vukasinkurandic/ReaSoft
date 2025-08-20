@@ -42,8 +42,26 @@ export const metadata: Metadata = {
     description: 'Profesionalni razvoj softvera po meri, izrada sajtova za firme u Srbiji. Automatizacija poslovanja i IT rešenja.',
   },
   icons: {
-    icon: '/favicon.svg',
-    apple: '/apple-touch-icon.svg',
+    icon: [
+      {
+        url: '/favicon.svg',
+        type: 'image/svg+xml',
+      },
+    ],
+    apple: [
+      {
+        url: '/apple-touch-icon.svg',
+        sizes: '180x180',
+        type: 'image/svg+xml',
+      },
+    ],
+    other: [
+      {
+        rel: 'icon',
+        type: 'image/svg+xml',
+        url: '/favicon.svg',
+      },
+    ],
   },
   alternates: {
     canonical: 'https://reasoft.rs',
@@ -63,10 +81,17 @@ export default function RootLayout({ children }: Props) {
   return (
     <html lang="sr" className="scroll-smooth" data-scroll-behavior="smooth">
       <head>
+        {/* Favicon and icons for all devices */}
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.svg" />
+        <link rel="icon" href="/favicon-32x32.svg" type="image/svg+xml" sizes="32x32" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.svg" sizes="180x180" />
         <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#D6A99D" />
+        
+        {/* Theme colors for different devices */}
+        <meta name="theme-color" content="#334155" />
+        <meta name="msapplication-TileColor" content="#334155" />
+        <meta name="msapplication-config" content="/browserconfig.xml" />
+        
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         
         {/* Preload critical resources for Core Web Vitals */}

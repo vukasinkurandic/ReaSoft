@@ -1,25 +1,50 @@
 <svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="180" height="180" rx="40" fill="url(#gradient)"/>
-  <g transform="translate(90, 90)">
-    <!-- Rocket Body -->
-    <path d="M0 -40 L-10 -20 L-10 10 L-5 20 L5 20 L10 10 L10 -20 Z" fill="white"/>
-    <!-- Rocket Tip -->
-    <path d="M0 -40 L-8 -30 L8 -30 Z" fill="#FBF3D5"/>
-    <!-- Side Fins -->
-    <path d="M-10 -10 L-20 0 L-10 10 Z" fill="#D6DAC8"/>
-    <path d="M10 -10 L20 0 L10 10 Z" fill="#D6DAC8"/>
-    <!-- Windows -->
-    <circle cx="0" cy="-10" r="5" fill="#9CAFAA"/>
-    <circle cx="0" cy="5" r="3" fill="#9CAFAA" opacity="0.7"/>
-    <!-- Flame -->
-    <path d="M-5 20 L0 35 L5 20 Z" fill="#FF6B35"/>
-    <path d="M-3 20 L0 30 L3 20 Z" fill="#FFB800"/>
+  <!-- Background with modern gradient - larger for Apple touch icon -->
+  <rect width="180" height="180" rx="35" fill="url(#modernGradient)"/>
+  
+  <!-- Rocket icon centered and scaled for larger size with enhanced visibility -->
+  <g transform="translate(90, 90) scale(3.2)">
+    <!-- Rocket body - larger and more prominent -->
+    <path d="M0 -11 L-3.5 -6.5 L-3.5 0 L-2.5 3.5 L2.5 3.5 L3.5 0 L3.5 -6.5 Z" fill="white" stroke="none"/>
+    
+    <!-- Rocket tip -->
+    <path d="M0 -11 L-2.5 -8.5 L2.5 -8.5 Z" fill="#60A5FA" stroke="none"/>
+    
+    <!-- Side fins - slightly larger -->
+    <path d="M-3.5 -2 L-5.5 1.5 L-3.5 2.5 Z" fill="#E5E7EB" stroke="none"/>
+    <path d="M3.5 -2 L5.5 1.5 L3.5 2.5 Z" fill="#E5E7EB" stroke="none"/>
+    
+    <!-- Window/porthole - larger -->
+    <circle cx="0" cy="-3" r="2" fill="#3B82F6" stroke="none"/>
+    
+    <!-- Flame trail - more prominent -->
+    <path d="M-2 3.5 L0 9 L2 3.5 Z" fill="url(#flameGradient)" stroke="none"/>
+    <path d="M-1.2 3.5 L0 7 L1.2 3.5 Z" fill="url(#innerFlame)" stroke="none"/>
+    
+    <!-- Additional details for larger size -->
+    <circle cx="0" cy="-3" r="1" fill="#1E40AF" stroke="none"/>
+    <rect x="-0.5" y="-1" width="1" height="2" fill="#D1D5DB" stroke="none"/>
   </g>
+  
   <defs>
-    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#D6A99D;stop-opacity:1" />
-      <stop offset="50%" style="stop-color:#FBF3D5;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#9CAFAA;stop-opacity:1" />
+    <!-- Modern brand gradient -->
+    <linearGradient id="modernGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1E293B;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#334155;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#475569;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Flame gradient -->
+    <linearGradient id="flameGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#F59E0B;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#EF4444;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#DC2626;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Inner flame -->
+    <linearGradient id="innerFlame" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FDE047;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F59E0B;stop-opacity:1" />
     </linearGradient>
   </defs>
 </svg>
