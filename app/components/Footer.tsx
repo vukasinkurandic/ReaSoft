@@ -17,7 +17,7 @@ export default function Footer({ language }: FooterProps) {
             animate={{ rotate: [0, 360] }}
             transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
           >
-            <Rocket className="text-white w-4 h-4 transform rotate-45" />
+            <img src="/rocket.png" alt="ReaSoft Logo" className="w-4 h-4" />
           </motion.div>
           <span className="text-xl font-bold bg-gradient-to-r from-brand-primary to-brand-highlight bg-clip-text text-transparent">
             ReaSoft

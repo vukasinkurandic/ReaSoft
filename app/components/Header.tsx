@@ -76,7 +76,7 @@ export default function Header({ language, setLanguage, t, scrollToSection }: He
             <motion.div 
               className="w-10 h-10 bg-gradient-to-br from-brand-primary to-brand-highlight rounded-lg flex items-center justify-center"
             >
-              <Rocket className="w-6 h-6 text-white transform rotate-45" />
+              <img src="/rocket.png" alt="ReaSoft Logo" className="w-6 h-6" />
             </motion.div>
             <span className="text-2xl font-bold bg-gradient-to-r from-brand-primary to-brand-highlight bg-clip-text text-transparent">
               ReaSoft

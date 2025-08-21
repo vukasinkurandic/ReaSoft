@@ -82,9 +82,11 @@ export default function RootLayout({ children }: Props) {
     <html lang="sr" className="scroll-smooth" data-scroll-behavior="smooth">
       <head>
         {/* Favicon and icons for all devices */}
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <link rel="icon" href="/favicon-32x32.svg" type="image/svg+xml" sizes="32x32" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.svg" sizes="180x180" />
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.json" />
         
         {/* Theme colors for different devices */}
@@ -130,7 +132,7 @@ export default function RootLayout({ children }: Props) {
               alternateName: 'ReaSoft - Razvoj softvera',
               description: 'Profesionalni razvoj softvera po meri, izrada sajtova za firme u Srbiji, automatizacija poslovanja i IT konsalting usluge. Professional custom software development, website creation for companies in Serbia, business automation and IT consulting services.',
               url: 'https://reasoft.rs',
-              logo: 'https://reasoft.rs/favicon.svg',
+              logo: 'https://reasoft.rs/rocket.png',
               contactPoint: {
                 '@type': 'ContactPoint',
                 telephone: '+381659210912',

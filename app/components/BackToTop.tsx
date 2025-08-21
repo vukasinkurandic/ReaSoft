@@ -6,6 +6,7 @@ import { Rocket } from 'lucide-react';
 
 export default function BackToTop() {
   const [showBackToTop, setShowBackToTop] = useState(false);
+  const [isLaunching, setIsLaunching] = useState(false);
 
   // Back to top functionality
   useEffect(() => {
@@ -18,6 +19,12 @@ export default function BackToTop() {
   }, []);
 
   const scrollToTop = () => {
+    // Activate rocket launch effects
+    setIsLaunching(true);
+    
+    // Deactivate effects after animation duration
+    setTimeout(() => setIsLaunching(false), 2500);
+    
     window.scrollTo({
       top: 0,
       behavior: 'smooth'
@@ -80,63 +87,84 @@ export default function BackToTop() {
           ease: "easeInOut"
         }}
       >
-        <Rocket className="w-6 h-6 text-white transform -rotate-45 group-hover:scale-110 transition-transform" />
+        <img src="/rocket.png" alt="Back to Top" className="w-8 h-8 transform -rotate-45 group-hover:scale-110 transition-transform" />
       </motion.div>
       
-      {/* Enhanced Rocket Trail */}
-      <motion.div
-        className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-3 bg-gradient-to-t from-orange-500 to-yellow-400 rounded-full"
-        animate={{
-          scale: [0.5, 1.2, 0.5],
-          opacity: [0.3, 1, 0.3],
-          height: [8, 16, 8]
-        }}
-        transition={{
-          duration: 0.8,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-      />
-      <motion.div
-        className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-2 bg-gradient-to-t from-red-500 to-orange-400 rounded-full"
-        animate={{
-          scale: [0.3, 1, 0.3],
-          opacity: [0.5, 1, 0.5],
-          height: [6, 12, 6]
-        }}
-        transition={{
-          duration: 1,
-          repeat: Infinity,
-          ease: "easeInOut",
-          delay: 0.2
-        }}
-      />
-      
-      {/* Sparkle Effects */}
-      <motion.div
-        className="absolute -top-1 -right-1 w-2 h-2 bg-brand-accent rounded-full"
-        animate={{
-          scale: [0, 1, 0],
-          opacity: [0, 1, 0]
-        }}
-        transition={{
-          duration: 1,
-          repeat: Infinity,
-          delay: 0.2
-        }}
-      />
-      <motion.div
-        className="absolute -top-2 -left-1 w-1.5 h-1.5 bg-brand-secondary rounded-full"
-        animate={{
-          scale: [0, 1, 0],
-          opacity: [0, 1, 0]
-        }}
-        transition={{
-          duration: 1.2,
-          repeat: Infinity,
-          delay: 0.5
-        }}
-      />
+      {/* Enhanced Rocket Trail - only when launching */}
+      {isLaunching && (
+        <>
+          <motion.div
+            className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-3 bg-gradient-to-t from-orange-500 to-yellow-400 rounded-full"
+            animate={{
+              scale: [0.5, 1.5, 0.5],
+              opacity: [0.3, 1, 0.3],
+              height: [8, 20, 8]
+            }}
+            transition={{
+              duration: 0.6,
+              repeat: 3,
+              ease: "easeInOut"
+            }}
+          />
+          <motion.div
+            className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-2 bg-gradient-to-t from-red-500 to-orange-400 rounded-full"
+            animate={{
+              scale: [0.3, 1.2, 0.3],
+              opacity: [0.5, 1, 0.5],
+              height: [6, 16, 6]
+            }}
+            transition={{
+              duration: 0.8,
+              repeat: 3,
+              ease: "easeInOut",
+              delay: 0.1
+            }}
+          />
+          
+          {/* Sparkle Effects - only when launching */}
+          <motion.div
+            className="absolute -top-1 -right-1 w-2 h-2 bg-brand-accent rounded-full"
+            animate={{
+              scale: [0, 1.5, 0],
+              opacity: [0, 1, 0],
+              x: [0, 10, 0],
+              y: [0, -5, 0]
+            }}
+            transition={{
+              duration: 0.8,
+              repeat: 2,
+              delay: 0.2
+            }}
+          />
+          <motion.div
+            className="absolute -top-2 -left-1 w-1.5 h-1.5 bg-brand-secondary rounded-full"
+            animate={{
+              scale: [0, 1.3, 0],
+              opacity: [0, 1, 0],
+              x: [0, -8, 0],
+              y: [0, -8, 0]
+            }}
+            transition={{
+              duration: 1,
+              repeat: 2,
+              delay: 0.4
+            }}
+          />
+          <motion.div
+            className="absolute -top-1 left-1/2 w-1 h-1 bg-brand-highlight rounded-full"
+            animate={{
+              scale: [0, 1.2, 0],
+              opacity: [0, 1, 0],
+              y: [0, -12, 0]
+            }}
+            transition={{
+              duration: 0.9,
+              repeat: 2,
+              delay: 0.6
+            }}
+          />
+        </>
+      )}
     </motion.button>
   );
 }

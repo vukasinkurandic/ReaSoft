@@ -116,7 +116,7 @@ export default function FAQ({ t, language }: FAQProps) {
                     ease: "easeInOut"
                   }}
                 >
-                  <Rocket className="w-8 h-8 text-brand-highlight opacity-60" />
+                  <img src="/rocket.png" alt="Rocket" className="w-8 h-8 opacity-60" />
                 </motion.div>
               </motion.div>
             </div>

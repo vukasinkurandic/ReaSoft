@@ -197,7 +197,7 @@ export default function ServiceCards({ services, language }: ServiceCardsProps) 
                     whileHover={{ scale: 1.1, rotate: 5 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <Rocket className={`w-4 sm:w-5 h-4 sm:h-5 ${colors.icon}`} />
+                    <img src="/rocket.png" alt="Rocket" className="w-4 sm:w-5 h-4 sm:h-5" />
                   </motion.div>
 
                   {/* Subtle border glow */}

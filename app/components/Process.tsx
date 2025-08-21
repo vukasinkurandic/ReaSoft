@@ -128,7 +128,7 @@ export default function Process({ t, language }: ProcessProps) {
                 }}
                 viewport={{ once: true }}
               >
-                <Rocket className="w-10 h-10" />
+                <img src="/rocket.png" alt="Rocket" className="w-10 h-10" />
               </motion.div>
               
               {/* Enhanced Sparkle Trail with Planet Colors */}

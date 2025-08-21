@@ -670,9 +670,7 @@ export default function ReaSoftWebsite() {
                             whileHover={{ scale: 1.1, rotate: 5 }}
                             transition={{ duration: 0.2 }}
                           >
-                            <Rocket className={`w-5 h-5 ${
-                              index === 1 || index === 3 || index === 5 ? 'text-slate-700' : 'text-white'
-                            }`} />
+                            <img src="/rocket.png" alt="Rocket" className="w-5 h-5" />
                           </motion.div>
                           {/* Decorative Element bottom left */}
                           <div className={`absolute bottom-6 left-6 w-16 h-16 rounded-full ${

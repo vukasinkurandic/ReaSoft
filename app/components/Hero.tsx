@@ -44,7 +44,7 @@ export default function Hero({ t, scrollToSection, language }: HeroProps) {
                 y: { duration: 2, repeat: Infinity, ease: "easeInOut" }
               }}
             >
-              <Rocket className="text-white w-12 h-12 transform rotate-45" />
+              <img src="/rocket.png" alt="ReaSoft Logo" className="w-12 h-12" />
             </motion.div>
           </motion.div>
 
@@ -68,7 +68,7 @@ export default function Hero({ t, scrollToSection, language }: HeroProps) {
               className="group w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-brand-primary to-brand-highlight text-white font-semibold rounded-xl hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-2 shadow-lg hover:shadow-2xl"
             >
               <span className="text-lg">{t.hero.cta}</span>
-              <Rocket className="w-5 h-5 group-hover:rotate-12 transition-transform" />
+              <img src="/rocket.png" alt="Rocket" className="w-5 h-5 group-hover:rotate-12 transition-transform" />
             </button>
             <a
               href="/about-us"
